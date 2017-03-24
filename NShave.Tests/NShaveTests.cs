@@ -61,6 +61,17 @@ namespace NShave.Tests
             Assert.That(convertedMustache, Is.EqualTo(razor));
         }
 
+        [TestCase]
+        public void ConvertMustacheModelValueWithRazorModelValue()
+        {
+            const string mustache = @"<h1>{{header}}</h1>";
+            const string razor = @"<h1>@Model.header</h1>";
+
+            var dataModel = (JObject)JsonConvert.DeserializeObject(DataTemplate);
+
+            var convertedMustache = MustacheToRazor(mustache, dataModel);
+            Assert.That(convertedMustache, Is.EqualTo(razor));
+        }
 
         private static string MustacheToRazor(string mustacheTemplate, JObject dataModel)
         {
@@ -76,24 +87,28 @@ namespace NShave.Tests
                         var mustacheToken = match.Groups[1].Value;
                         var propertyName = mustacheToken.Substring(1, mustacheToken.Length - 1);
 
-                        if (mustacheToken.First() == '#')
+                        switch (mustacheToken.First())
                         {
-                            var propertyType = dataModel[propertyName].Type;
+                            case '#':
+                                var propertyType = dataModel[propertyName].Type;
 
-                            switch (propertyType)
-                            {
-                                case JTokenType.Boolean:
-                                    line = $"if (@Model.{propertyName}) {{";
-                                    break;
-                                case JTokenType.Array:
-                                    var singularName = propertyName.Substring(0, propertyName.Length - 1);
-                                    line = $"foreach (var {singularName} in Model.{propertyName}) {{";
-                                    break;
-                            }
-                        }
-                        else if (mustacheToken.First() == '/')
-                        {
-                            line = "}";
+                                switch (propertyType)
+                                {
+                                    case JTokenType.Boolean:
+                                        line = $"if (@Model.{propertyName}) {{";
+                                        break;
+                                    case JTokenType.Array:
+                                        var singularName = propertyName.Substring(0, propertyName.Length - 1);
+                                        line = $"foreach (var {singularName} in Model.{propertyName}) {{";
+                                        break;
+                                }
+                                break;
+                            case '/':
+                                line = "}";
+                                break;
+                            default:
+                                line = Regex.Replace(line, @"{{(.*?)}}", m => $"@Model.{m.Groups[1].Value}");
+                                break;
                         }
                     }
 
