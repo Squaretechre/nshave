@@ -24,7 +24,7 @@ namespace NShave.Tests
 }";
 
         [TestCase]
-        public void ConvertMustacheBooleanStatementToRazorIfStatement()
+        public void ConvertMustacheIfStatementToRazorIfStatement()
         {
             const string mustache = 
 @"{{#empty}}
@@ -41,6 +41,26 @@ namespace NShave.Tests
             var convertedMustache = MustacheToRazor(mustache, dataModel);
             Assert.That(convertedMustache, Is.EqualTo(razor));
         }
+
+        [TestCase]
+        public void ConvertMustacheLoopToRazorLoop()
+        {
+            const string mustache =
+@"{{#items}}
+    <p>hello, world!</p>
+{{/items}}";
+
+            const string razor =
+@"foreach (var item in Model.items) {
+    <p>hello, world!</p>
+}";
+
+            var dataModel = (JObject)JsonConvert.DeserializeObject(DataTemplate);
+
+            var convertedMustache = MustacheToRazor(mustache, dataModel);
+            Assert.That(convertedMustache, Is.EqualTo(razor));
+        }
+
 
         private static string MustacheToRazor(string mustacheTemplate, JObject dataModel)
         {
@@ -64,6 +84,10 @@ namespace NShave.Tests
                             {
                                 case JTokenType.Boolean:
                                     line = $"if (@Model.{propertyName}) {{";
+                                    break;
+                                case JTokenType.Array:
+                                    var singularName = propertyName.Substring(0, propertyName.Length - 1);
+                                    line = $"foreach (var {singularName} in Model.{propertyName}) {{";
                                     break;
                             }
                         }
