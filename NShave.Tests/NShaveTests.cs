@@ -43,6 +43,22 @@ namespace NShave.Tests
         }
 
         [TestCase]
+        public void ConvertMustacheFalseyIfStatementToRazor()
+        {
+            const string mustache =
+@"{{^empty}}
+    <p>hello, world!</p>
+{{/empty}}";
+
+            const string expectedRazor =
+@"@if (!Model.Empty) {
+    <p>hello, world!</p>
+}";
+
+            AssertCorrectConversion(mustache, expectedRazor, DataTemplateColors);
+        }
+
+        [TestCase]
         public void ConvertMustacheLoopToRazor()
         {
             const string mustache =

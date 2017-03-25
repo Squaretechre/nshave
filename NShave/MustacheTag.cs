@@ -6,23 +6,29 @@ namespace NShave
 {
     public class MustacheTag
     {
-        private readonly string _name;
+        private const char Section = '#';
+        private const char InvertedSection = '^';
+        private readonly char _firstChar;
+        private readonly string _key;
         private readonly JTokenType _type;
 
-        public MustacheTag(string name, JTokenType type)
+        public MustacheTag(string mustacheTag, JObject dataModel)
         {
-            _name = name;
-            _type = type;
+            _firstChar = mustacheTag.First();
+            _key = mustacheTag.Substring(1, mustacheTag.Length - 1);
+            _type = dataModel[_key].Type;
         }
 
         public string ToRazor()
         {
             var razor = string.Empty;
-            var razorPropertyName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_name);
+            var razorPropertyName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_key);
             switch (_type)
             {
                 case JTokenType.Boolean:
-                    razor = $"@if (Model.{razorPropertyName}) {{";
+                    razor = _firstChar.Equals(InvertedSection)
+                        ? $"@if (!Model.{razorPropertyName}) {{"
+                        : $"@if (Model.{razorPropertyName}) {{";
                     break;
                 case JTokenType.Array:
                     var singularName = PluralToSingularName(razorPropertyName);
@@ -32,12 +38,10 @@ namespace NShave
             return razor;
         }
 
-        private static string PluralToSingularName(string razorPropertyName)
-        {
-            return razorPropertyName
-                .Substring(0, razorPropertyName.Length - 1)
-                .Insert(0, razorPropertyName.ToLower().First().ToString())
-                .Remove(1, 1);
-        }
+        private static string PluralToSingularName(string razorPropertyName) 
+            => razorPropertyName
+            .Substring(0, razorPropertyName.Length - 1)
+            .Insert(0, razorPropertyName.ToLower().First().ToString())
+            .Remove(1, 1);
     }
 }

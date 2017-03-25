@@ -30,14 +30,13 @@ namespace NShave
                     var match = Regex.Match(line, @"{{(.*)}}", RegexOptions.IgnoreCase);
                     if (match.Success)
                     {
-                        var lineWithMustacheTag = match.Groups[1].Value;
+                        var mustacheTag = match.Groups[1].Value;
 
-                        switch (lineWithMustacheTag.First())
+                        switch (mustacheTag.First())
                         {
                             case '#':
-                                var tagName = lineWithMustacheTag.Substring(1, lineWithMustacheTag.Length - 1);
-                                var tagType = _dataModel[tagName].Type;
-                                var tag = new MustacheTag(tagName, tagType);
+                            case '^':
+                                var tag = new MustacheTag(mustacheTag, _dataModel);
                                 line = tag.ToRazor();
                                 break;
                             case '/':
