@@ -105,6 +105,14 @@ namespace NShave.Tests
             AssertCorrectConversion(mustache, expectedRazor, DataModelPerson);
         }
 
+        [TestCase]
+        public void ConvertMustachePartialToRazor()
+        {
+            const string mustache = @"{{> user}}";
+            const string expectedRazor = @"@Html.Partial(""_User"", Model)";
+            AssertCorrectConversion(mustache, expectedRazor, DataModelPerson);
+        }
+
         private static void AssertCorrectConversion(string mustache, string expectedRazor, string dataModel)
         {
             var model = (JObject)JsonConvert.DeserializeObject(dataModel);

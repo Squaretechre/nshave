@@ -15,6 +15,7 @@ namespace NShave
         public string ToRazor()
         {
             var razorLine = ReplaceMustacheCommentsIn(_templateLine);
+            razorLine = ReplaceMustachePartialsIn(razorLine);
             razorLine = ReplaceMustacheVariablesIn(razorLine);
             return razorLine;
         }
@@ -31,6 +32,13 @@ namespace NShave
             {
                 var propertyName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(m.Groups[1].Value);
                 return $"@Model.{propertyName}";
+            });
+
+        private static string ReplaceMustachePartialsIn(string line)
+            => Regex.Replace(line, @"{{>(.*?)}}", m =>
+            {
+                var partialName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(m.Groups[1].Value).Trim();
+                return $"@Html.Partial(\"_{partialName}\", Model)";
             });
     }
 }
