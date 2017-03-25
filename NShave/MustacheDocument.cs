@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -43,7 +44,11 @@ namespace NShave
                                 line = "}";
                                 break;
                             default:
-                                line = Regex.Replace(line, @"{{(.*?)}}", m => $"@Model.{m.Groups[1].Value}");
+                                line = Regex.Replace(line, @"{{(.*?)}}", m =>
+                                {
+                                    var propertyName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(m.Groups[1].Value);
+                                    return $"@Model.{propertyName}";
+                                });
                                 break;
                         }
                     }

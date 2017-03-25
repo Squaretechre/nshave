@@ -61,7 +61,7 @@ namespace NShave.Tests
         public void ConvertMustacheVariableTagToRazor()
         {
             const string mustache = @"<h1>{{header}}</h1>";
-            const string expectedRazor = @"<h1>@Model.header</h1>";
+            const string expectedRazor = @"<h1>@Model.Header</h1>";
             AssertCorrectConversion(mustache, expectedRazor, DataTemplateColors);
         }
 
@@ -69,7 +69,7 @@ namespace NShave.Tests
         public void ConvertMustacheLineWithMultipleVariablesToRazor()
         {
             const string mustache = @"<p><span>{{header}}</span><span>{{header}}</span></p>";
-            const string expectedRazor = @"<p><span>@Model.header</span><span>@Model.header</span></p>";
+            const string expectedRazor = @"<p><span>@Model.Header</span><span>@Model.Header</span></p>";
             AssertCorrectConversion(mustache, expectedRazor, DataTemplateColors);
         }
 
@@ -77,7 +77,7 @@ namespace NShave.Tests
         public void ConvertMustacheAccessingObjectPropertyValueToRazor()
         {
             const string mustache = @"{{name.first}} {{name.last}}";
-            const string expectedRazor = @"@Model.name.first @Model.name.last";
+            const string expectedRazor = @"@Model.Name.First @Model.Name.Last";
             AssertCorrectConversion(mustache, expectedRazor, DataTemplatePerson);
         }
 
