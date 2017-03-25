@@ -27,7 +27,7 @@ namespace NShave.Tests
 }";
 
         [TestCase]
-        public void ConvertMustacheIfStatementToRazorIfStatement()
+        public void ConvertMustacheTruthyIfStatementToRazor()
         {
             const string mustache =
 @"{{#empty}}
@@ -43,7 +43,7 @@ namespace NShave.Tests
         }
 
         [TestCase]
-        public void ConvertMustacheLoopToRazorLoop()
+        public void ConvertMustacheLoopToRazor()
         {
             const string mustache =
 @"{{#items}}
@@ -58,7 +58,7 @@ namespace NShave.Tests
         }
 
         [TestCase]
-        public void ConvertMustacheModelValueWithRazorModelValue()
+        public void ConvertMustacheVariableTagToRazor()
         {
             const string mustache = @"<h1>{{header}}</h1>";
             const string expectedRazor = @"<h1>@Model.header</h1>";
@@ -66,7 +66,7 @@ namespace NShave.Tests
         }
 
         [TestCase]
-        public void ConvertMustacheLineWithMultipleModelValuesToRazor()
+        public void ConvertMustacheLineWithMultipleVariablesToRazor()
         {
             const string mustache = @"<p><span>{{header}}</span><span>{{header}}</span></p>";
             const string expectedRazor = @"<p><span>@Model.header</span><span>@Model.header</span></p>";
