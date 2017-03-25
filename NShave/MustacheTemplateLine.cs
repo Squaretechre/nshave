@@ -14,8 +14,17 @@ namespace NShave
 
         public string ToRazor()
         {
-            return ReplaceMustacheVariablesIn(_templateLine);
+            var razorLine = ReplaceMustacheCommentsIn(_templateLine);
+            razorLine = ReplaceMustacheVariablesIn(razorLine);
+            return razorLine;
         }
+
+        private static string ReplaceMustacheCommentsIn(string line)
+            => Regex.Replace(line, @"{{!(.*?)}}", m =>
+            {
+                var comment = m.Groups[1].Value;
+                return $"@*{comment}*@";
+            });
 
         private static string ReplaceMustacheVariablesIn(string line)
             => Regex.Replace(line, @"{{(.*?)}}", m =>

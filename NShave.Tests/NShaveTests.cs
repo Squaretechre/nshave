@@ -97,6 +97,14 @@ namespace NShave.Tests
             AssertCorrectConversion(mustache, expectedRazor, DataModelPerson);
         }
 
+        [TestCase]
+        public void ConvertMustacheCommentsToRazor()
+        {
+            const string mustache = @"<h1>Today{{! ignore me }}.</h1>";
+            const string expectedRazor = @"<h1>Today@* ignore me *@.</h1>";
+            AssertCorrectConversion(mustache, expectedRazor, DataModelPerson);
+        }
+
         private static void AssertCorrectConversion(string mustache, string expectedRazor, string dataModel)
         {
             var model = (JObject)JsonConvert.DeserializeObject(dataModel);
