@@ -23,7 +23,7 @@ namespace NShave
                     break;
                 case JTokenType.Array:
                     var singularName = _name.Substring(0, _name.Length - 1);
-                    razor = $"foreach (var {singularName} in Model.{_name}) {{";
+                    razor = $"@foreach (var {singularName} in Model.{_name}) {{";
                     break;
             }
             return razor;

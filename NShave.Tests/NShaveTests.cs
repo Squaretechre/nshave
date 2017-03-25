@@ -51,7 +51,7 @@ namespace NShave.Tests
 {{/items}}";
 
             const string expectedRazor =
-@"foreach (var item in Model.items) {
+@"@foreach (var item in Model.items) {
     <p>hello, world!</p>
 }";
             AssertCorrectConversion(mustache, expectedRazor, DataTemplateColors);
