@@ -73,6 +73,18 @@ namespace NShave.Tests
             Assert.That(convertedMustache, Is.EqualTo(razor));
         }
 
+        [TestCase]
+        public void ConvertMustacheLineWithMultipleModelValuesToRazor()
+        {
+            const string mustache = @"<p><span>{{header}}</span><span>{{header}}</span></p>";
+            const string razor = @"<p><span>@Model.header</span><span>@Model.header</span></p>";
+
+            var dataModel = (JObject)JsonConvert.DeserializeObject(DataTemplate);
+
+            var convertedMustache = MustacheToRazor(mustache, dataModel);
+            Assert.That(convertedMustache, Is.EqualTo(razor));
+        }
+
         private static string MustacheToRazor(string mustacheTemplate, JObject dataModel)
         {
             var razorTemplate = new StringBuilder();
