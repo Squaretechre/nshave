@@ -42,11 +42,7 @@ namespace NShave
                                 line = "}";
                                 break;
                             default:
-                                line = Regex.Replace(line, @"{{(.*?)}}", m =>
-                                {
-                                    var propertyName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(m.Groups[1].Value);
-                                    return $"@Model.{propertyName}";
-                                });
+                                line = ReplaceMustacheVariables(line);
                                 break;
                         }
                     }
@@ -56,8 +52,20 @@ namespace NShave
                 }
             }
 
-            razorTemplate.Length = razorTemplate.Length - 2;
+            RemoveTrailingNewLine(razorTemplate);
             return razorTemplate.ToString();
         }
+
+        private static void RemoveTrailingNewLine(StringBuilder razorTemplate)
+        {
+            razorTemplate.Length = razorTemplate.Length - 2;
+        }
+
+        private static string ReplaceMustacheVariables(string line)
+            => Regex.Replace(line, @"{{(.*?)}}", m =>
+            {
+                var propertyName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(m.Groups[1].Value);
+                return $"@Model.{propertyName}";
+            });
     }
 }
