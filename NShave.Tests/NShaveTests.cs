@@ -7,8 +7,8 @@ namespace NShave.Tests
     [TestFixture]
     public class NShaveTests
     {
-        public const string DataTemplate =
-            @"{
+        public const string DataTemplateColors =
+@"{
   ""header"": ""Colors"",
   ""items"": [
       {""name"": ""red"", ""first"": true, ""url"": ""#Red""},
@@ -16,6 +16,14 @@ namespace NShave.Tests
       {""name"": ""blue"", ""link"": true, ""url"": ""#Blue""}
   ],
   ""empty"": false
+}";
+
+        public const string DataTemplatePerson = 
+@"{
+  ""name"": {
+    ""first"": ""John"",
+    ""last"": ""Doe""
+  }
 }";
 
         [TestCase]
@@ -26,15 +34,12 @@ namespace NShave.Tests
     <p>hello, world!</p>
 {{/empty}}";
 
-            const string razor =
+            const string expectedRazor =
 @"if (@Model.empty) {
     <p>hello, world!</p>
 }";
 
-            var dataModel = (JObject) JsonConvert.DeserializeObject(DataTemplate);
-
-            var convertedMustache = new MustacheDocument(mustache, dataModel).ToRazor();
-            Assert.That(convertedMustache, Is.EqualTo(razor));
+            AssertCorrectConversion(mustache, expectedRazor, DataTemplateColors);
         }
 
         [TestCase]
@@ -45,27 +50,19 @@ namespace NShave.Tests
     <p>hello, world!</p>
 {{/items}}";
 
-            const string razor =
+            const string expectedRazor =
 @"foreach (var item in Model.items) {
     <p>hello, world!</p>
 }";
-
-            var dataModel = (JObject) JsonConvert.DeserializeObject(DataTemplate);
-
-            var convertedMustache = new MustacheDocument(mustache, dataModel).ToRazor();
-            Assert.That(convertedMustache, Is.EqualTo(razor));
+            AssertCorrectConversion(mustache, expectedRazor, DataTemplateColors);
         }
 
         [TestCase]
         public void ConvertMustacheModelValueWithRazorModelValue()
         {
             const string mustache = @"<h1>{{header}}</h1>";
-            const string razor = @"<h1>@Model.header</h1>";
-
-            var dataModel = (JObject) JsonConvert.DeserializeObject(DataTemplate);
-
-            var convertedMustache = new MustacheDocument(mustache, dataModel).ToRazor();
-            Assert.That(convertedMustache, Is.EqualTo(razor));
+            const string expectedRazor = @"<h1>@Model.header</h1>";
+            AssertCorrectConversion(mustache, expectedRazor, DataTemplateColors);
         }
 
         [TestCase]
@@ -73,8 +70,20 @@ namespace NShave.Tests
         {
             const string mustache = @"<p><span>{{header}}</span><span>{{header}}</span></p>";
             const string expectedRazor = @"<p><span>@Model.header</span><span>@Model.header</span></p>";
+            AssertCorrectConversion(mustache, expectedRazor, DataTemplateColors);
+        }
 
-            var dataModel = (JObject) JsonConvert.DeserializeObject(DataTemplate);
+        [TestCase]
+        public void ConvertMustacheAccessingObjectPropertyValueToRazor()
+        {
+            const string mustache = @"{{name.first}} {{name.last}}";
+            const string expectedRazor = @"@Model.name.first @Model.name.last";
+            AssertCorrectConversion(mustache, expectedRazor, DataTemplatePerson);
+        }
+
+        private static void AssertCorrectConversion(string mustache, string expectedRazor, string dataTemplate)
+        {
+            var dataModel = (JObject)JsonConvert.DeserializeObject(dataTemplate);
 
             var convertedMustache = new MustacheDocument(mustache, dataModel).ToRazor();
             Assert.That(convertedMustache, Is.EqualTo(expectedRazor));
