@@ -11,11 +11,13 @@ namespace NShave
     {
         private static string _template;
         private static JObject _dataModel;
+        private readonly Scope _scope;
 
-        public MustacheDocument(string template, JObject dataModel)
+        public MustacheDocument(string template, JObject dataModel, Scope scope)
         {
             _template = template;
             _dataModel = dataModel;
+            _scope = scope;
         }
 
         public string ToRazor()
@@ -36,7 +38,7 @@ namespace NShave
                             case '#':
                             case '^':
                             case '/':
-                                templateLine = new MustacheTag(mustacheTag, _dataModel).ToRazor();
+                                templateLine = new MustacheTag(mustacheTag, _dataModel, _scope).ToRazor();
                                 break;
                             default:
                                 templateLine = new MustacheTemplateLine(templateLine).ToRazor();

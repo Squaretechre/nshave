@@ -1,31 +1,11 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using NShave.Tests.Support;
 using NUnit.Framework;
 
-namespace NShave.Tests
+namespace NShave.Tests.Tests
 {
     [TestFixture]
-    public class NShaveTests
+    public class CoreConversionTests
     {
-        public const string DataModelColors =
-@"{
-  ""header"": ""Colors"",
-  ""items"": [
-      {""name"": ""red"", ""first"": true, ""url"": ""#Red""},
-      {""name"": ""green"", ""link"": true, ""url"": ""#Green""},
-      {""name"": ""blue"", ""link"": true, ""url"": ""#Blue""}
-  ],
-  ""empty"": false
-}";
-
-        public const string DataModelPerson = 
-@"{
-  ""name"": {
-    ""first"": ""John"",
-    ""last"": ""Doe""
-  }
-}";
-
         [TestCase]
         public void ConvertMustacheTruthyIfStatementToRazor()
         {
@@ -39,7 +19,7 @@ namespace NShave.Tests
     <p>hello, world!</p>
 }";
 
-            AssertCorrectConversion(mustache, expectedRazor, DataModelColors);
+            ConversionAssertion.AssertCorrectWith(mustache, expectedRazor, DataModels.Colors);
         }
 
         [TestCase]
@@ -55,7 +35,7 @@ namespace NShave.Tests
     <p>hello, world!</p>
 }";
 
-            AssertCorrectConversion(mustache, expectedRazor, DataModelColors);
+            ConversionAssertion.AssertCorrectWith(mustache, expectedRazor, DataModels.Colors);
         }
 
         [TestCase]
@@ -70,7 +50,7 @@ namespace NShave.Tests
 @"@foreach (var item in Model.Items) {
     <p>hello, world!</p>
 }";
-            AssertCorrectConversion(mustache, expectedRazor, DataModelColors);
+            ConversionAssertion.AssertCorrectWith(mustache, expectedRazor, DataModels.Colors);
         }
 
         [TestCase]
@@ -78,7 +58,7 @@ namespace NShave.Tests
         {
             const string mustache = @"<h1>{{header}}</h1>";
             const string expectedRazor = @"<h1>@Model.Header</h1>";
-            AssertCorrectConversion(mustache, expectedRazor, DataModelColors);
+            ConversionAssertion.AssertCorrectWith(mustache, expectedRazor, DataModels.Colors);
         }
 
         [TestCase]
@@ -86,7 +66,7 @@ namespace NShave.Tests
         {
             const string mustache = @"<p><span>{{header}}</span><span>{{header}}</span></p>";
             const string expectedRazor = @"<p><span>@Model.Header</span><span>@Model.Header</span></p>";
-            AssertCorrectConversion(mustache, expectedRazor, DataModelColors);
+            ConversionAssertion.AssertCorrectWith(mustache, expectedRazor, DataModels.Colors);
         }
 
         [TestCase]
@@ -94,7 +74,7 @@ namespace NShave.Tests
         {
             const string mustache = @"{{name.first}} {{name.last}}";
             const string expectedRazor = @"@Model.Name.First @Model.Name.Last";
-            AssertCorrectConversion(mustache, expectedRazor, DataModelPerson);
+            ConversionAssertion.AssertCorrectWith(mustache, expectedRazor, DataModels.Person);
         }
 
         [TestCase]
@@ -102,7 +82,7 @@ namespace NShave.Tests
         {
             const string mustache = @"<h1>Today{{! ignore me }}.</h1>";
             const string expectedRazor = @"<h1>Today@* ignore me *@.</h1>";
-            AssertCorrectConversion(mustache, expectedRazor, DataModelPerson);
+            ConversionAssertion.AssertCorrectWith(mustache, expectedRazor, DataModels.Person);
         }
 
         [TestCase]
@@ -110,14 +90,7 @@ namespace NShave.Tests
         {
             const string mustache = @"{{> user}}";
             const string expectedRazor = @"@Html.Partial(""_User"", Model)";
-            AssertCorrectConversion(mustache, expectedRazor, DataModelPerson);
-        }
-
-        private static void AssertCorrectConversion(string mustache, string expectedRazor, string dataModel)
-        {
-            var model = (JObject)JsonConvert.DeserializeObject(dataModel);
-            var convertedMustache = new MustacheDocument(mustache, model).ToRazor();
-            Assert.That(convertedMustache, Is.EqualTo(expectedRazor));
+            ConversionAssertion.AssertCorrectWith(mustache, expectedRazor, DataModels.Person);
         }
     }
 }

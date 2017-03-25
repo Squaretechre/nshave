@@ -12,10 +12,12 @@ namespace NShave
         private const string RazorCloseBlock = "}";
         private readonly char _firstChar;
         private readonly string _key;
+        private readonly Scope _scope;
         private readonly JTokenType _type;
 
-        public MustacheTag(string mustacheTag, JObject dataModel)
+        public MustacheTag(string mustacheTag, JObject dataModel, Scope scope)
         {
+            _scope = scope;
             _firstChar = mustacheTag.First();
             _key = mustacheTag.Substring(1, mustacheTag.Length - 1);
             _type = dataModel[_key].Type;
@@ -26,7 +28,11 @@ namespace NShave
             var razor = string.Empty;
             var razorPropertyName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_key);
 
-            if (_firstChar.Equals(EndSection)) return RazorCloseBlock;
+            if (_firstChar.Equals(EndSection))
+            {
+                _scope.Leave(_key);
+                return RazorCloseBlock;
+            }
 
             switch (_type)
             {
@@ -36,6 +42,7 @@ namespace NShave
                         : $"@if (Model.{razorPropertyName}) {{";
                     break;
                 case JTokenType.Array:
+                    _scope.Enter(_key);
                     var singularName = PluralToSingularName(razorPropertyName);
                     razor = $"@foreach (var {singularName} in Model.{razorPropertyName}) {{";
                     break;
@@ -43,10 +50,10 @@ namespace NShave
             return razor;
         }
 
-        private static string PluralToSingularName(string razorPropertyName) 
+        private static string PluralToSingularName(string razorPropertyName)
             => razorPropertyName
-            .Substring(0, razorPropertyName.Length - 1)
-            .Insert(0, razorPropertyName.ToLower().First().ToString())
-            .Remove(1, 1);
+                .Substring(0, razorPropertyName.Length - 1)
+                .Insert(0, razorPropertyName.ToLower().First().ToString())
+                .Remove(1, 1);
     }
 }
