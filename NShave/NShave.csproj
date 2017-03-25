@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="MustacheDocument.cs" />
     <Compile Include="MustacheTag.cs" />
+    <Compile Include="MustacheTemplateLine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

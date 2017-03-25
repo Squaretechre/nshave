@@ -1,5 +1,4 @@
 using System;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -24,10 +23,10 @@ namespace NShave
             var razorTemplate = new StringBuilder();
             using (var reader = new StringReader(_template))
             {
-                string line;
-                while ((line = reader.ReadLine()) != null)
+                string templateLine;
+                while ((templateLine = reader.ReadLine()) != null)
                 {
-                    var match = Regex.Match(line, @"{{(.*)}}", RegexOptions.IgnoreCase);
+                    var match = Regex.Match(templateLine, @"{{(.*)}}", RegexOptions.IgnoreCase);
                     if (match.Success)
                     {
                         var mustacheTag = match.Groups[1].Value;
@@ -36,36 +35,29 @@ namespace NShave
                         {
                             case '#':
                             case '^':
-                                line = new MustacheTag(mustacheTag, _dataModel).ToRazor();
+                                templateLine = new MustacheTag(mustacheTag, _dataModel).ToRazor();
                                 break;
                             case '/':
-                                line = "}";
+                                templateLine = "}";
                                 break;
                             default:
-                                line = ReplaceMustacheVariables(line);
+                                templateLine = new MustacheTemplateLine(templateLine).ToRazor();
                                 break;
                         }
                     }
 
-                    razorTemplate.Append(line);
+                    razorTemplate.Append(templateLine);
                     razorTemplate.Append(Environment.NewLine);
                 }
             }
 
-            RemoveTrailingNewLine(razorTemplate);
+            RemoveTrailingNewLineFrom(razorTemplate);
             return razorTemplate.ToString();
         }
 
-        private static void RemoveTrailingNewLine(StringBuilder razorTemplate)
+        private static void RemoveTrailingNewLineFrom(StringBuilder razorTemplate)
         {
             razorTemplate.Length = razorTemplate.Length - 2;
         }
-
-        private static string ReplaceMustacheVariables(string line)
-            => Regex.Replace(line, @"{{(.*?)}}", m =>
-            {
-                var propertyName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(m.Groups[1].Value);
-                return $"@Model.{propertyName}";
-            });
     }
 }
