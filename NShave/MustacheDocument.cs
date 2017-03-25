@@ -36,8 +36,7 @@ namespace NShave
                         {
                             case '#':
                             case '^':
-                                var tag = new MustacheTag(mustacheTag, _dataModel);
-                                line = tag.ToRazor();
+                                line = new MustacheTag(mustacheTag, _dataModel).ToRazor();
                                 break;
                             case '/':
                                 line = "}";
