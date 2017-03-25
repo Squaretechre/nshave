@@ -35,7 +35,7 @@ namespace NShave.Tests
 {{/empty}}";
 
             const string expectedRazor =
-@"if (@Model.empty) {
+@"@if (Model.empty) {
     <p>hello, world!</p>
 }";
 

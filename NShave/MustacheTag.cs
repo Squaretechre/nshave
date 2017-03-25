@@ -19,7 +19,7 @@ namespace NShave
             switch (_type)
             {
                 case JTokenType.Boolean:
-                    razor = $"if (@Model.{_name}) {{";
+                    razor = $"@if (Model.{_name}) {{";
                     break;
                 case JTokenType.Array:
                     var singularName = _name.Substring(0, _name.Length - 1);
