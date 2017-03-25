@@ -7,7 +7,7 @@ namespace NShave.Tests
     [TestFixture]
     public class NShaveTests
     {
-        public const string DataTemplateColors =
+        public const string DataModelColors =
 @"{
   ""header"": ""Colors"",
   ""items"": [
@@ -18,7 +18,7 @@ namespace NShave.Tests
   ""empty"": false
 }";
 
-        public const string DataTemplatePerson = 
+        public const string DataModelPerson = 
 @"{
   ""name"": {
     ""first"": ""John"",
@@ -39,7 +39,7 @@ namespace NShave.Tests
     <p>hello, world!</p>
 }";
 
-            AssertCorrectConversion(mustache, expectedRazor, DataTemplateColors);
+            AssertCorrectConversion(mustache, expectedRazor, DataModelColors);
         }
 
         [TestCase]
@@ -55,7 +55,7 @@ namespace NShave.Tests
     <p>hello, world!</p>
 }";
 
-            AssertCorrectConversion(mustache, expectedRazor, DataTemplateColors);
+            AssertCorrectConversion(mustache, expectedRazor, DataModelColors);
         }
 
         [TestCase]
@@ -70,7 +70,7 @@ namespace NShave.Tests
 @"@foreach (var item in Model.Items) {
     <p>hello, world!</p>
 }";
-            AssertCorrectConversion(mustache, expectedRazor, DataTemplateColors);
+            AssertCorrectConversion(mustache, expectedRazor, DataModelColors);
         }
 
         [TestCase]
@@ -78,7 +78,7 @@ namespace NShave.Tests
         {
             const string mustache = @"<h1>{{header}}</h1>";
             const string expectedRazor = @"<h1>@Model.Header</h1>";
-            AssertCorrectConversion(mustache, expectedRazor, DataTemplateColors);
+            AssertCorrectConversion(mustache, expectedRazor, DataModelColors);
         }
 
         [TestCase]
@@ -86,7 +86,7 @@ namespace NShave.Tests
         {
             const string mustache = @"<p><span>{{header}}</span><span>{{header}}</span></p>";
             const string expectedRazor = @"<p><span>@Model.Header</span><span>@Model.Header</span></p>";
-            AssertCorrectConversion(mustache, expectedRazor, DataTemplateColors);
+            AssertCorrectConversion(mustache, expectedRazor, DataModelColors);
         }
 
         [TestCase]
@@ -94,14 +94,13 @@ namespace NShave.Tests
         {
             const string mustache = @"{{name.first}} {{name.last}}";
             const string expectedRazor = @"@Model.Name.First @Model.Name.Last";
-            AssertCorrectConversion(mustache, expectedRazor, DataTemplatePerson);
+            AssertCorrectConversion(mustache, expectedRazor, DataModelPerson);
         }
 
-        private static void AssertCorrectConversion(string mustache, string expectedRazor, string dataTemplate)
+        private static void AssertCorrectConversion(string mustache, string expectedRazor, string dataModel)
         {
-            var dataModel = (JObject)JsonConvert.DeserializeObject(dataTemplate);
-
-            var convertedMustache = new MustacheDocument(mustache, dataModel).ToRazor();
+            var model = (JObject)JsonConvert.DeserializeObject(dataModel);
+            var convertedMustache = new MustacheDocument(mustache, model).ToRazor();
             Assert.That(convertedMustache, Is.EqualTo(expectedRazor));
         }
     }
