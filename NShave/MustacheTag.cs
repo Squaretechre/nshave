@@ -8,6 +8,8 @@ namespace NShave
     {
         private const char Section = '#';
         private const char InvertedSection = '^';
+        private const char EndSection = '/';
+        private const string RazorCloseBlock = "}";
         private readonly char _firstChar;
         private readonly string _key;
         private readonly JTokenType _type;
@@ -23,6 +25,9 @@ namespace NShave
         {
             var razor = string.Empty;
             var razorPropertyName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_key);
+
+            if (_firstChar.Equals(EndSection)) return RazorCloseBlock;
+
             switch (_type)
             {
                 case JTokenType.Boolean:
