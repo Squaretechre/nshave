@@ -49,6 +49,7 @@
     <Compile Include="MustacheTemplateLine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scope.cs" />
+    <Compile Include="ScopeFormat.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

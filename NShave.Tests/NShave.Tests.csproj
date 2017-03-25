@@ -52,6 +52,7 @@
     <Compile Include="Support\ConversionAssertion.cs" />
     <Compile Include="Support\DataModels.cs" />
     <Compile Include="Tests\CoreConversionTests.cs" />
+    <Compile Include="Tests\NestedTagTests.cs" />
     <Compile Include="Tests\ScopeTests.cs" />
   </ItemGroup>
   <ItemGroup>

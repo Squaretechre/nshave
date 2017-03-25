@@ -15,11 +15,12 @@ namespace NShave.Tests.Tests
 {{/empty}}";
 
             const string expectedRazor =
-@"@if (Model.Empty) {
+@"@if (Model.Empty)
+{
     <p>hello, world!</p>
 }";
 
-            ConversionAssertion.AssertCorrectWith(mustache, expectedRazor, DataModels.Colors);
+            ConversionAssertion.AssertCorrectWith(mustache, expectedRazor, DataModels.ColorsStructured);
         }
 
         [TestCase]
@@ -31,11 +32,12 @@ namespace NShave.Tests.Tests
 {{/empty}}";
 
             const string expectedRazor =
-@"@if (!Model.Empty) {
+@"@if (!Model.Empty)
+{
     <p>hello, world!</p>
 }";
 
-            ConversionAssertion.AssertCorrectWith(mustache, expectedRazor, DataModels.Colors);
+            ConversionAssertion.AssertCorrectWith(mustache, expectedRazor, DataModels.ColorsStructured);
         }
 
         [TestCase]
@@ -47,10 +49,11 @@ namespace NShave.Tests.Tests
 {{/items}}";
 
             const string expectedRazor =
-@"@foreach (var item in Model.Items) {
+@"@foreach (var item in Model.Items)
+{
     <p>hello, world!</p>
 }";
-            ConversionAssertion.AssertCorrectWith(mustache, expectedRazor, DataModels.Colors);
+            ConversionAssertion.AssertCorrectWith(mustache, expectedRazor, DataModels.ColorsStructured);
         }
 
         [TestCase]
@@ -58,7 +61,7 @@ namespace NShave.Tests.Tests
         {
             const string mustache = @"<h1>{{header}}</h1>";
             const string expectedRazor = @"<h1>@Model.Header</h1>";
-            ConversionAssertion.AssertCorrectWith(mustache, expectedRazor, DataModels.Colors);
+            ConversionAssertion.AssertCorrectWith(mustache, expectedRazor, DataModels.ColorsStructured);
         }
 
         [TestCase]
@@ -66,7 +69,7 @@ namespace NShave.Tests.Tests
         {
             const string mustache = @"<p><span>{{header}}</span><span>{{header}}</span></p>";
             const string expectedRazor = @"<p><span>@Model.Header</span><span>@Model.Header</span></p>";
-            ConversionAssertion.AssertCorrectWith(mustache, expectedRazor, DataModels.Colors);
+            ConversionAssertion.AssertCorrectWith(mustache, expectedRazor, DataModels.ColorsStructured);
         }
 
         [TestCase]

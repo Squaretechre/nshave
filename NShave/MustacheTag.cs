@@ -13,14 +13,31 @@ namespace NShave
         private readonly char _firstChar;
         private readonly string _key;
         private readonly Scope _scope;
+        private readonly ScopeFormat _formatting;
         private readonly JTokenType _type;
 
-        public MustacheTag(string mustacheTag, JObject dataModel, Scope scope)
+        private const string RazorTruthyIf = 
+@"{0}{1}if ({2}.{3})
+{4}{{";
+
+        private const string RazorFalseyIf =
+@"{0}{1}if (!{2}.{3})
+{4}{{";
+
+        private const string RazorForeach =
+@"{0}{1}foreach (var {2} in {3}.{4})
+{5}{{";
+
+        public MustacheTag(string mustacheTag, JObject dataModel, Scope scope, ScopeFormat formatting)
         {
             _scope = scope;
+            _formatting = formatting;
             _firstChar = mustacheTag.First();
             _key = mustacheTag.Substring(1, mustacheTag.Length - 1);
-            _type = dataModel[_key].Type;
+            if(_firstChar.Equals(EndSection)) _scope.Leave(_key);
+            _type = scope.IsDefault()
+                ? dataModel[_key].Type
+                : dataModel[scope.Current()].First()[_key].Type;
         }
 
         public string ToRazor()
@@ -30,30 +47,27 @@ namespace NShave
 
             if (_firstChar.Equals(EndSection))
             {
-                _scope.Leave(_key);
-                return RazorCloseBlock;
+                return $"{_formatting.Indentation()}{RazorCloseBlock}{_formatting.NewLine()}";
             }
+
+            var razorScopeMarker = _formatting.ScopeMarker();
+            var indentation = _formatting.Indentation();
 
             switch (_type)
             {
                 case JTokenType.Boolean:
+                    var scopeName = _formatting.ScopeNameCorrectedForRendering();
                     razor = _firstChar.Equals(InvertedSection)
-                        ? $"@if (!Model.{razorPropertyName}) {{"
-                        : $"@if (Model.{razorPropertyName}) {{";
+                        ? string.Format(RazorFalseyIf, indentation, razorScopeMarker, scopeName, razorPropertyName, indentation)
+                        : string.Format(RazorTruthyIf, indentation, razorScopeMarker, scopeName, razorPropertyName, indentation);
                     break;
                 case JTokenType.Array:
+                    var propertyNameSingular = _formatting.PluralToSingularName(razorPropertyName);
+                    razor = string.Format(RazorForeach, indentation, razorScopeMarker, propertyNameSingular, _scope.Current(), razorPropertyName, indentation);
                     _scope.Enter(_key);
-                    var singularName = PluralToSingularName(razorPropertyName);
-                    razor = $"@foreach (var {singularName} in Model.{razorPropertyName}) {{";
                     break;
             }
             return razor;
         }
-
-        private static string PluralToSingularName(string razorPropertyName)
-            => razorPropertyName
-                .Substring(0, razorPropertyName.Length - 1)
-                .Insert(0, razorPropertyName.ToLower().First().ToString())
-                .Remove(1, 1);
     }
 }

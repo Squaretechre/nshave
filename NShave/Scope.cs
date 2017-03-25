@@ -13,7 +13,11 @@ namespace NShave
             _scope.Push(DefaultScopeName);
         }
 
+        public bool IsDefault() => _scope.Peek().Equals(DefaultScopeName);
+
         public string Current() => _scope.Peek();
+
+        public int Nesting() => _scope.Count - 1;
 
         public void Enter(string scopeName) => _scope.Push(scopeName);
 

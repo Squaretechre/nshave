@@ -25,8 +25,9 @@ namespace NShave.Tests.Tests
     <p>hello, world!</p>
 ";
             var scope = new Scope();
-            var model = (JObject)JsonConvert.DeserializeObject(DataModels.Colors);
-            var convertedMustache = new MustacheDocument(mustache, model, scope).ToRazor();
+            var formatting = new ScopeFormat(scope);
+            var model = (JObject)JsonConvert.DeserializeObject(DataModels.ColorsStructured);
+            var convertedMustache = new MustacheDocument(mustache, model, scope, formatting).ToRazor();
 
             const string expectedScope = "items";
             var actualScope = scope.Current();
@@ -34,7 +35,7 @@ namespace NShave.Tests.Tests
         }
 
         [TestCase]
-        public void ScopeShouldReturnToDefaultAfterEnteringAndLeavingANewScopeFromDefault()
+        public void ScopeShouldReturnToDefaultAfterEnteringAndLeavingANewScopeFromDefaultScope()
         {
             const string mustache =
 @"{{#items}}
@@ -42,11 +43,37 @@ namespace NShave.Tests.Tests
 {{/items}}";
 
             var scope = new Scope();
-            var model = (JObject)JsonConvert.DeserializeObject(DataModels.Colors);
-            var convertedMustache = new MustacheDocument(mustache, model, scope).ToRazor();
+            var formatting = new ScopeFormat(scope);
+            var model = (JObject)JsonConvert.DeserializeObject(DataModels.ColorsStructured);
+            var convertedMustache = new MustacheDocument(mustache, model, scope, formatting).ToRazor();
 
             var actualScope = scope.Current();
             Assert.That(actualScope, Is.EqualTo(DefaultScopeName));
+        }
+
+        [TestCase]
+        public void ShouldReportNestingLevelOfOneWhenEnteringANewScopeFromDefaultScope()
+        {
+            const string mustache =
+@"{{#items}}
+    <p>hello, world!</p>
+";
+            var scope = new Scope();
+            var formatting = new ScopeFormat(scope);
+            var model = (JObject)JsonConvert.DeserializeObject(DataModels.ColorsStructured);
+            var convertedMustache = new MustacheDocument(mustache, model, scope, formatting).ToRazor();
+            Assert.That(scope.Nesting(), Is.EqualTo(1));
+        }
+
+        [TestCase]
+        public void ShouldReportNestingLevelOfZeroWhenInDefaultScope()
+        {
+            const string mustache = "<p>{{heading}}</p>";
+            var scope = new Scope();
+            var formatting = new ScopeFormat(scope);
+            var model = (JObject)JsonConvert.DeserializeObject(DataModels.ColorsStructured);
+            var convertedMustache = new MustacheDocument(mustache, model, scope, formatting).ToRazor();
+            Assert.That(scope.Nesting(), Is.EqualTo(0));
         }
     }
 }

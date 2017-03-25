@@ -12,12 +12,14 @@ namespace NShave
         private static string _template;
         private static JObject _dataModel;
         private readonly Scope _scope;
+        private readonly ScopeFormat _formatting;
 
-        public MustacheDocument(string template, JObject dataModel, Scope scope)
+        public MustacheDocument(string template, JObject dataModel, Scope scope, ScopeFormat formatting)
         {
             _template = template;
             _dataModel = dataModel;
             _scope = scope;
+            _formatting = formatting;
         }
 
         public string ToRazor()
@@ -38,26 +40,20 @@ namespace NShave
                             case '#':
                             case '^':
                             case '/':
-                                templateLine = new MustacheTag(mustacheTag, _dataModel, _scope).ToRazor();
+                                templateLine = new MustacheTag(mustacheTag, _dataModel, _scope, _formatting).ToRazor();
                                 break;
                             default:
-                                templateLine = new MustacheTemplateLine(templateLine).ToRazor();
+                                templateLine = new MustacheTemplateLine(templateLine, _formatting).ToRazor();
                                 break;
                         }
                     }
 
                     razorTemplate.Append(templateLine);
-                    razorTemplate.Append(Environment.NewLine);
+                    razorTemplate.Append(_formatting.NewLine());
                 }
             }
 
-            RemoveTrailingNewLineFrom(razorTemplate);
-            return razorTemplate.ToString();
-        }
-
-        private static void RemoveTrailingNewLineFrom(StringBuilder razorTemplate)
-        {
-            razorTemplate.Length = razorTemplate.Length - 2;
+            return razorTemplate.ToString().Trim();
         }
     }
 }
