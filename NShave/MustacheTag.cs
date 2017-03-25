@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using System.Globalization;
+using System.Linq;
+using Newtonsoft.Json.Linq;
 
 namespace NShave
 {
@@ -16,17 +18,26 @@ namespace NShave
         public string ToRazor()
         {
             var razor = string.Empty;
+            var razorPropertyName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_name);
             switch (_type)
             {
                 case JTokenType.Boolean:
-                    razor = $"@if (Model.{_name}) {{";
+                    razor = $"@if (Model.{razorPropertyName}) {{";
                     break;
                 case JTokenType.Array:
-                    var singularName = _name.Substring(0, _name.Length - 1);
-                    razor = $"@foreach (var {singularName} in Model.{_name}) {{";
+                    var singularName = PluralToSingularName(razorPropertyName);
+                    razor = $"@foreach (var {singularName} in Model.{razorPropertyName}) {{";
                     break;
             }
             return razor;
+        }
+
+        private static string PluralToSingularName(string razorPropertyName)
+        {
+            return razorPropertyName
+                .Substring(0, razorPropertyName.Length - 1)
+                .Insert(0, razorPropertyName.ToLower().First().ToString())
+                .Remove(1, 1);
         }
     }
 }
