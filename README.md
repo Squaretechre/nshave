@@ -19,3 +19,4 @@ Convert Mustache templates to Razor templates.
 ### Test Case Todo ###
 * Manage unstructured JSON
 * Nested loops
+* Pass correct scope to partial
