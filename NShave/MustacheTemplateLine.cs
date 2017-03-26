@@ -33,7 +33,7 @@ namespace NShave
             => Regex.Replace(line, @"{{(.*?)}}", m =>
             {
                 var propertyName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(m.Groups[1].Value);
-                return $"{_formatting.ScopeMarker()}{_formatting.ScopeNameCorrectedForRendering()}.{propertyName}";
+                return $"@{_formatting.ScopeNameCorrectedForRendering()}.{propertyName}";
             });
 
         private string ReplaceMustachePartialsIn(string line)

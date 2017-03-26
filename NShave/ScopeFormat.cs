@@ -24,11 +24,9 @@ namespace NShave
                 : RazorAlreadyInBlockScopeMarker;
 
         public string ScopeNameCorrectedForRendering()
-        {
-            return _scope.IsDefault()
+            => _scope.IsDefault()
                 ? _scope.Current()
                 : PluralToSingularName(_scope.Current());
-        }
 
         public string PluralToSingularName(string razorPropertyName)
             => razorPropertyName

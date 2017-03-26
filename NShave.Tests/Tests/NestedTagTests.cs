@@ -24,12 +24,12 @@ namespace NShave.Tests.Tests
 {
     if (item.First)
     {
-        <li><strong>item.Name</strong></li>
+        <li><strong>@item.Name</strong></li>
     }
 
     if (item.Link)
     {
-        <li><a href=""item.Url"">item.Name</a></li>
+        <li><a href=""@item.Url"">@item.Name</a></li>
     }
 
 }";
