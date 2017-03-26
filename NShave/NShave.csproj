@@ -44,6 +44,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IEnterScope.cs" />
+    <Compile Include="ILeaveScope.cs" />
+    <Compile Include="IScope.cs" />
     <Compile Include="MustacheDocument.cs" />
     <Compile Include="MustacheTag.cs" />
     <Compile Include="MustacheTemplateLine.cs" />

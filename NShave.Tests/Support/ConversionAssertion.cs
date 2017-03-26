@@ -8,10 +8,11 @@ namespace NShave.Tests.Support
     {
         public static void AssertCorrectWith(string mustache, string expectedRazor, string dataModel)
         {
-            var scope = new Scope();
-            var formatting = new ScopeFormat(scope);
+            var dataAccessScope = new Scope();
+            var formattingScope = new Scope();
+            var formatting = new ScopeFormat(dataAccessScope, formattingScope);
             var model = (JObject) JsonConvert.DeserializeObject(dataModel);
-            var convertedMustache = new MustacheDocument(mustache, model, scope, formatting).ToRazor();
+            var convertedMustache = new MustacheDocument(mustache, model, dataAccessScope, formatting).ToRazor();
             Assert.That(convertedMustache, Is.EqualTo(expectedRazor));
         }
     }

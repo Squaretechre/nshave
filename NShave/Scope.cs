@@ -2,7 +2,7 @@
 
 namespace NShave
 {
-    public class Scope
+    public class Scope : IScope, IEnterScope, ILeaveScope
     {
         private readonly Stack<string> _scope;
         private const string DefaultScopeName = "Model";

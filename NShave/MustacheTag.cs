@@ -12,8 +12,8 @@ namespace NShave
         private const string RazorCloseBlock = "}";
         private readonly char _firstChar;
         private readonly string _key;
-        private readonly Scope _scope;
-        private readonly ScopeFormat _formatting;
+        private readonly Scope _dataAccessScope;
+        private readonly ScopeFormat _formattingScope;
         private readonly JTokenType _type;
 
         private const string RazorTruthyIf = 
@@ -28,16 +28,22 @@ namespace NShave
 @"{0}{1}foreach (var {2} in {3}.{4})
 {5}{{";
 
-        public MustacheTag(string mustacheTag, JObject dataModel, Scope scope, ScopeFormat formatting)
+        public MustacheTag(string mustacheTag, JObject dataModel, Scope dataAccessScope, ScopeFormat formattingScope)
         {
-            _scope = scope;
-            _formatting = formatting;
+            _dataAccessScope = dataAccessScope;
+            _formattingScope = formattingScope;
             _firstChar = mustacheTag.First();
             _key = mustacheTag.Substring(1, mustacheTag.Length - 1);
-            if(_firstChar.Equals(EndSection)) _scope.Leave(_key);
-            _type = scope.IsDefault()
+
+            if (_firstChar.Equals(EndSection))
+            {
+                _formattingScope.Leave(_key);
+                _dataAccessScope.Leave(_key);
+            }
+
+            _type = dataAccessScope.IsDefault()
                 ? dataModel[_key].Type
-                : dataModel[scope.Current()].First()[_key].Type;
+                : dataModel[dataAccessScope.Current()].First()[_key].Type;
         }
 
         public string ToRazor()
@@ -47,26 +53,28 @@ namespace NShave
 
             if (_firstChar.Equals(EndSection))
             {
-                return $"{_formatting.Indentation()}{RazorCloseBlock}{_formatting.NewLine()}";
+                return $"{_formattingScope.Indentation()}{RazorCloseBlock}{_formattingScope.NewLine()}";
             }
 
-            var razorScopeMarker = _formatting.ScopeMarker();
-            var indentation = _formatting.Indentation();
+            var razorScopeMarker = _formattingScope.ScopeMarker();
+            var indentation = _formattingScope.Indentation();
+            var scopeName = _formattingScope.ScopeNameCorrectedForRendering();
 
             switch (_type)
             {
                 case JTokenType.Boolean:
-                    var scopeName = _formatting.ScopeNameCorrectedForRendering();
                     razor = _firstChar.Equals(InvertedSection)
                         ? string.Format(RazorFalseyIf, indentation, razorScopeMarker, scopeName, razorPropertyName, indentation)
                         : string.Format(RazorTruthyIf, indentation, razorScopeMarker, scopeName, razorPropertyName, indentation);
                     break;
                 case JTokenType.Array:
-                    var propertyNameSingular = _formatting.PluralToSingularName(razorPropertyName);
-                    razor = string.Format(RazorForeach, indentation, razorScopeMarker, propertyNameSingular, _scope.Current(), razorPropertyName, indentation);
-                    _scope.Enter(_key);
+                    var propertyNameSingular = _formattingScope.PluralToSingularName(razorPropertyName);
+                    razor = string.Format(RazorForeach, indentation, "@", propertyNameSingular, scopeName, razorPropertyName, indentation);
+                    _dataAccessScope.Enter(_key);
                     break;
             }
+
+            _formattingScope.Enter(_key);
             return razor;
         }
     }

@@ -24,13 +24,14 @@ namespace NShave.Tests.Tests
 @"{{#items}}
     <p>hello, world!</p>
 ";
-            var scope = new Scope();
-            var formatting = new ScopeFormat(scope);
-            var model = (JObject)JsonConvert.DeserializeObject(DataModels.ColorsStructured);
-            var convertedMustache = new MustacheDocument(mustache, model, scope, formatting).ToRazor();
+            var dataAccessScope = new Scope();
+            var formattingScope = new Scope();
+            var formatting = new ScopeFormat(dataAccessScope, formattingScope);
+            var model = (JObject)JsonConvert.DeserializeObject(DataModel.ColorsStructured);
+            var convertedMustache = new MustacheDocument(mustache, model, dataAccessScope, formatting).ToRazor();
 
             const string expectedScope = "items";
-            var actualScope = scope.Current();
+            var actualScope = dataAccessScope.Current();
             Assert.That(actualScope, Is.EqualTo(expectedScope));
         }
 
@@ -42,12 +43,13 @@ namespace NShave.Tests.Tests
     <p>hello, world!</p>
 {{/items}}";
 
-            var scope = new Scope();
-            var formatting = new ScopeFormat(scope);
-            var model = (JObject)JsonConvert.DeserializeObject(DataModels.ColorsStructured);
-            var convertedMustache = new MustacheDocument(mustache, model, scope, formatting).ToRazor();
+            var dataAccessScope = new Scope();
+            var formattingScope = new Scope();
+            var formatting = new ScopeFormat(dataAccessScope, formattingScope);
+            var model = (JObject)JsonConvert.DeserializeObject(DataModel.ColorsStructured);
+            var convertedMustache = new MustacheDocument(mustache, model, dataAccessScope, formatting).ToRazor();
 
-            var actualScope = scope.Current();
+            var actualScope = dataAccessScope.Current();
             Assert.That(actualScope, Is.EqualTo(DefaultScopeName));
         }
 
@@ -58,22 +60,24 @@ namespace NShave.Tests.Tests
 @"{{#items}}
     <p>hello, world!</p>
 ";
-            var scope = new Scope();
-            var formatting = new ScopeFormat(scope);
-            var model = (JObject)JsonConvert.DeserializeObject(DataModels.ColorsStructured);
-            var convertedMustache = new MustacheDocument(mustache, model, scope, formatting).ToRazor();
-            Assert.That(scope.Nesting(), Is.EqualTo(1));
+            var dataAccessScope = new Scope();
+            var formattingScope = new Scope();
+            var formatting = new ScopeFormat(dataAccessScope, formattingScope);
+            var model = (JObject)JsonConvert.DeserializeObject(DataModel.ColorsStructured);
+            var convertedMustache = new MustacheDocument(mustache, model, dataAccessScope, formatting).ToRazor();
+            Assert.That(dataAccessScope.Nesting(), Is.EqualTo(1));
         }
 
         [TestCase]
         public void ShouldReportNestingLevelOfZeroWhenInDefaultScope()
         {
             const string mustache = "<p>{{heading}}</p>";
-            var scope = new Scope();
-            var formatting = new ScopeFormat(scope);
-            var model = (JObject)JsonConvert.DeserializeObject(DataModels.ColorsStructured);
-            var convertedMustache = new MustacheDocument(mustache, model, scope, formatting).ToRazor();
-            Assert.That(scope.Nesting(), Is.EqualTo(0));
+            var dataAccessScope = new Scope();
+            var formattingScope = new Scope();
+            var formatting = new ScopeFormat(dataAccessScope, formattingScope);
+            var model = (JObject)JsonConvert.DeserializeObject(DataModel.ColorsStructured);
+            var convertedMustache = new MustacheDocument(mustache, model, dataAccessScope, formatting).ToRazor();
+            Assert.That(dataAccessScope.Nesting(), Is.EqualTo(0));
         }
     }
 }

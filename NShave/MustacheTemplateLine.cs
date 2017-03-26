@@ -19,7 +19,8 @@ namespace NShave
             var razorLine = ReplaceMustacheCommentsIn(_templateLine);
             razorLine = ReplaceMustachePartialsIn(razorLine);
             razorLine = ReplaceMustacheVariablesIn(razorLine);
-            return razorLine;
+            razorLine = razorLine.Trim();
+            return $"{_formatting.Indentation()}{razorLine}";
         }
 
         private static string ReplaceMustacheCommentsIn(string line)

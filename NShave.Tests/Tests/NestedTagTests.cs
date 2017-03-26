@@ -33,7 +33,36 @@ namespace NShave.Tests.Tests
     }
 
 }";
-            ConversionAssertion.AssertCorrectWith(mustache, expectedRazor, DataModels.ColorsStructured);
+            ConversionAssertion.AssertCorrectWith(mustache, expectedRazor, DataModel.ColorsStructured);
+        }
+
+        [TestCase]
+        public void ConvertMustacheWithNestedLoopOneLevelDeepToRazor()
+        {
+            const string mustache =
+@"{{#posts}}
+    <p>{{title}}</p>
+    <ul>
+        {{#categories}}
+            <li>{{name}}</li>
+        {{/categories}}
+    </ul>
+{{/posts}}";
+
+            const string expectedRazor =
+@"@foreach (var post in Model.Posts)
+{
+    <p>@post.Title</p>
+    <ul>
+    @foreach (var category in post.Categories)
+    {
+        <li>@category.Name</li>
+    }
+
+    </ul>
+}";
+
+            ConversionAssertion.AssertCorrectWith(mustache, expectedRazor, DataModel.Posts);
         }
     }
 }
