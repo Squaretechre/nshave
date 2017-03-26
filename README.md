@@ -1,4 +1,4 @@
-![logo](http://presure.co.uk/nshave-logo.png "NShave Logo")
+![logo](http://presure.co.uk/nshave-logo-small.png "NShave Logo")
 
 
 # NShave #
@@ -15,3 +15,7 @@ Convert Mustache templates to Razor templates.
 * ~~Comments~~
 * ~~Partials~~
 * Custom Delimiters
+
+### Test Case Todo ###
+* Manage unstructured JSON
+* Nested loops
