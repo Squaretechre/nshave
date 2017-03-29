@@ -42,7 +42,7 @@ namespace NShave
 
             _type = dataAccessScope.IsDefault()
                 ? dataModel[_key].Type
-                : dataModel[dataAccessScope.Current()].First()[_key].Type;
+                : dataModel.SelectToken(dataAccessScope.AsJsonPath())[_key].Type;
         }
 
         public string ToRazor()

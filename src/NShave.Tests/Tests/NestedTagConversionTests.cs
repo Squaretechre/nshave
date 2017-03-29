@@ -89,10 +89,10 @@ const string expectedRazor =
 @"@foreach (var post in Model.Posts)
 {
     <ul>
-        @foreach (var category in post.Categories)
-        {
-            <li>@category.Name</li>
-        }
+    @foreach (var category in post.Categories)
+    {
+        <li>@category.Name</li>
+    }
     </ul>
     foreach (var author in post.Authors)
     {
