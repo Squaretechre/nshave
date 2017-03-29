@@ -10,7 +10,7 @@ namespace NShave
         private const char EndSectionToken = '/';
         private const string RazorCloseBlockToken = "}";
         private readonly char _firstCharOfTag;
-        private readonly string _key;
+        private readonly string _tagKey;
         private readonly Scope _dataAccessScope;
         private readonly ScopeFormat _formattingScope;
         private readonly JTokenType _type;
@@ -32,25 +32,25 @@ namespace NShave
             _dataAccessScope = dataAccessScope;
             _formattingScope = formattingScope;
             _firstCharOfTag = mustacheTag.First();
-            _key = mustacheTag.Substring(1, mustacheTag.Length - 1);
+            _tagKey = mustacheTag.Substring(1, mustacheTag.Length - 1);
 
             if (_firstCharOfTag.Equals(EndSectionToken)) LeaveCurrentScopes();
 
             _type = dataAccessScope.IsDefault()
-                ? dataModel[_key].Type
-                : dataModel.SelectToken(dataAccessScope.AsJsonPath())[_key].Type;
+                ? dataModel[_tagKey].Type
+                : dataModel.SelectToken(dataAccessScope.AsJsonPath())[_tagKey].Type;
         }
 
         private void LeaveCurrentScopes()
         {
-            _formattingScope.Leave(_key);
-            _dataAccessScope.Leave(_key);
+            _formattingScope.Leave(_tagKey);
+            _dataAccessScope.Leave(_tagKey);
         }
 
         public string ToRazor()
         {
             var razor = string.Empty;
-            var razorPropertyName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_key);
+            var razorPropertyName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_tagKey);
 
             if (_firstCharOfTag.Equals(EndSectionToken))
             {
@@ -71,11 +71,11 @@ namespace NShave
                 case JTokenType.Array:
                     var propertyNameSingular = _formattingScope.PluralToSingularName(razorPropertyName);
                     razor = string.Format(RazorForEach, indentation, "@", propertyNameSingular, scopeName, razorPropertyName, indentation);
-                    _dataAccessScope.Enter(_key);
+                    _dataAccessScope.Enter(_tagKey);
                     break;
             }
 
-            _formattingScope.Enter(_key);
+            _formattingScope.Enter(_tagKey);
             return razor;
         }
     }
