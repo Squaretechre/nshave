@@ -34,22 +34,25 @@ namespace NShave
         private string ReplaceMustacheVariablesIn(string line)
             => Regex.Replace(line, @"{{(.*?)}}", match =>
             {
-                var propertyName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(match.Groups[1].Value);
-                return $"@{_formatting.ScopeNameCorrectedForRendering()}.{propertyName}";
+                var variableName = VariableNameFromRegexMatch(match);
+                return $"@{_formatting.ScopeNameCorrectedForRendering()}.{variableName}";
             });
 
         private string ReplaceMustacheWildcardVariablesIn(string line)
             => Regex.Replace(line, @"{{.}}", match =>
             {
-                var propertyName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(match.Groups[1].Value);
+                var variableName = VariableNameFromRegexMatch(match);
                 return $"@{_formatting.ScopeNameCorrectedForRendering()}";
             });
 
         private string ReplaceMustachePartialsIn(string line)
             => Regex.Replace(line, @"{{>(.*?)}}", match =>
             {
-                var partialName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(match.Groups[1].Value).Trim();
+                var partialName = VariableNameFromRegexMatch(match).Trim();
                 return $"{_formatting.ScopeMarker()}Html.Partial(\"_{partialName}\", Model)";
             });
+
+        private static string VariableNameFromRegexMatch(Match match)
+            => CultureInfo.CurrentCulture.TextInfo.ToTitleCase(match.Groups[1].Value);
     }
 }
