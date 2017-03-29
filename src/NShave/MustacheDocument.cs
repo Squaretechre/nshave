@@ -47,9 +47,9 @@ namespace NShave
             return razorTemplate.ToString().Trim();
         }
 
-        private static bool MatchIsAMustacheTag(string mustacheTag)
-        {
-            return mustacheTag.First() == '#' || mustacheTag.First() == '^' || mustacheTag.First() == '/';
-        }
+        private static bool MatchIsAMustacheTag(string mustacheTag) 
+            => mustacheTag.First() == '#' 
+            || mustacheTag.First() == '^' 
+            || mustacheTag.First() == '/';
     }
 }
