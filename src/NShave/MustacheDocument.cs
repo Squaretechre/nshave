@@ -34,17 +34,9 @@ namespace NShave
                     {
                         var mustacheTag = match.Groups[1].Value;
 
-                        switch (mustacheTag.First())
-                        {
-                            case '#':
-                            case '^':
-                            case '/':
-                                templateLine = new MustacheTag(mustacheTag, _dataModel, _scope, _formatting).ToRazor();
-                                break;
-                            default:
-                                templateLine = new MustacheTemplateLine(templateLine, _formatting).ToRazor();
-                                break;
-                        }
+                        templateLine = MatchIsAMustacheTag(mustacheTag) 
+                            ? new MustacheTag(mustacheTag, _dataModel, _scope, _formatting).ToRazor() 
+                            : new MustacheTemplateLine(templateLine, _formatting).ToRazor();
                     }
 
                     razorTemplate.Append(templateLine);
@@ -53,6 +45,11 @@ namespace NShave
             }
 
             return razorTemplate.ToString().Trim();
+        }
+
+        private static bool MatchIsAMustacheTag(string mustacheTag)
+        {
+            return mustacheTag.First() == '#' || mustacheTag.First() == '^' || mustacheTag.First() == '/';
         }
     }
 }
