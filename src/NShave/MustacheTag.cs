@@ -34,15 +34,17 @@ namespace NShave
             _firstCharOfTag = mustacheTag.First();
             _key = mustacheTag.Substring(1, mustacheTag.Length - 1);
 
-            if (_firstCharOfTag.Equals(EndSectionToken))
-            {
-                _formattingScope.Leave(_key);
-                _dataAccessScope.Leave(_key);
-            }
+            if (_firstCharOfTag.Equals(EndSectionToken)) LeaveCurrentScopes();
 
             _type = dataAccessScope.IsDefault()
                 ? dataModel[_key].Type
                 : dataModel.SelectToken(dataAccessScope.AsJsonPath())[_key].Type;
+        }
+
+        private void LeaveCurrentScopes()
+        {
+            _formattingScope.Leave(_key);
+            _dataAccessScope.Leave(_key);
         }
 
         public string ToRazor()
