@@ -1,5 +1,3 @@
-using System.Threading;
-
 namespace NShave.Tests.Support
 {
     internal static class DataModel
@@ -26,7 +24,7 @@ namespace NShave.Tests.Support
   ""empty"": false
 }";
 
-        public static string Person = 
+        public static string Person =
 @"{
   ""name"": {
     ""first"": ""John"",
@@ -42,6 +40,30 @@ namespace NShave.Tests.Support
       {""title"": ""bar"", ""categories"": [{ ""name"": ""infosec"" },
     { ""name"": ""mobile"" }, { ""name"": ""web"" }]}
   ]
+}";
+
+        public static string PostWithNestedLoops =
+@"{
+    ""posts"": [
+        {
+            ""categories"": [""foo"", ""bar"", ""baz""],
+            ""authors"": [
+                 {
+                     ""name"": ""foo"",
+                     ""socialmedia"": [
+                         ""http://www.twitter.com/"",
+                         ""http://www.facebook.com/""
+                     ]
+                 },
+                 {
+                     ""name"": ""bar"",
+                     ""socialmedia"": [
+                         ""http://www.weibo.com""
+                     ]
+                 }
+            ]
+        }
+    ]
 }";
 
         public static string DaysOfTheWeek =

@@ -40,7 +40,8 @@ const string mustache =
         public void ConvertMustacheWithNestedLoopOneLevelDeepToRazor()
         {
             
-const string mustache = @"{{#posts}}
+const string mustache = 
+@"{{#posts}}
     <p>{{title}}</p>
     <ul>
         {{#categories}}
@@ -63,6 +64,45 @@ const string mustache = @"{{#posts}}
 }";
 
             ConversionAssertion.AssertCorrectWith(mustache, expectedRazor, DataModel.Posts);
+        }
+
+        [Fact]
+        public void ConvertMustacheWithNestedLoopTwoLevelsDeepToRazor()
+        {
+const string mustache =
+@"{{#posts}}
+<p>{{title}}</p>
+    <ul>
+        {{#categories}}
+        <li>{{name}}</li>
+        {{/categories}}
+    </ul>
+    {{#authors}}
+    <p>{{name}}</p>
+        {{#socialmedia}}
+        <span>{{url}}</span>
+        {{/socialmedia}}
+    {{/authors}}
+{{/posts}}";
+
+const string expectedRazor =
+@"@foreach (var post in Model.Posts)
+{
+    <ul>
+        @foreach (var category in post.Categories)
+        {
+            <li>@category.Name</li>
+        }
+    </ul>
+    foreach (var author in post.Authors)
+    {
+        foreach (var socialmedia in author.SocialMedia)
+        {
+            <span>@socialmedia.Url</span>
+        }
+    }
+}";
+            ConversionAssertion.AssertCorrectWith(mustache, expectedRazor, DataModel.PostWithNestedLoops);
         }
     }
 }
