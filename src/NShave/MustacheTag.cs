@@ -41,21 +41,12 @@ namespace NShave
                 : dataModel.SelectToken(dataAccessScope.AsJsonPath())[_tagKey].Type;
         }
 
-        private void LeaveCurrentScopes()
-        {
-            _formattingScope.Leave(_tagKey);
-            _dataAccessScope.Leave(_tagKey);
-        }
-
         public string ToRazor()
         {
             var razor = string.Empty;
             var razorPropertyName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_tagKey);
 
-            if (_firstCharOfTag.Equals(EndSectionToken))
-            {
-                return $"{_formattingScope.Indentation()}{RazorCloseBlockToken}{_formattingScope.NewLine()}";
-            }
+            if (_firstCharOfTag.Equals(EndSectionToken)) return RazorCloseBlock();
 
             var razorScopeMarker = _formattingScope.ScopeMarker();
             var indentation = _formattingScope.Indentation();
@@ -78,5 +69,14 @@ namespace NShave
             _formattingScope.Enter(_tagKey);
             return razor;
         }
+
+        private void LeaveCurrentScopes()
+        {
+            _formattingScope.Leave(_tagKey);
+            _dataAccessScope.Leave(_tagKey);
+        }
+
+        private string RazorCloseBlock() 
+            => $"{_formattingScope.Indentation()}{RazorCloseBlockToken}{_formattingScope.NewLine()}";
     }
 }
