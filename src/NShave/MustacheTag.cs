@@ -6,7 +6,6 @@ namespace NShave
 {
     public class MustacheTag
     {
-        private const char Section = '#';
         private const char InvertedSection = '^';
         private const char EndSection = '/';
         private const string RazorCloseBlock = "}";
@@ -24,7 +23,7 @@ namespace NShave
 @"{0}{1}if (!{2}.{3})
 {4}{{";
 
-        private const string RazorForeach =
+        private const string RazorForEach =
 @"{0}{1}foreach (var {2} in {3}.{4})
 {5}{{";
 
@@ -69,7 +68,7 @@ namespace NShave
                     break;
                 case JTokenType.Array:
                     var propertyNameSingular = _formattingScope.PluralToSingularName(razorPropertyName);
-                    razor = string.Format(RazorForeach, indentation, "@", propertyNameSingular, scopeName, razorPropertyName, indentation);
+                    razor = string.Format(RazorForEach, indentation, "@", propertyNameSingular, scopeName, razorPropertyName, indentation);
                     _dataAccessScope.Enter(_key);
                     break;
             }

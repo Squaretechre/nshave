@@ -1,8 +1,10 @@
+using System.Threading;
+
 namespace NShave.Tests.Support
 {
     internal static class DataModel
     {
-        public const string ColorsStructured =
+        public static string ColorsStructured =
 @"{
   ""header"": ""ColorsStructured"",
   ""items"": [
@@ -13,7 +15,7 @@ namespace NShave.Tests.Support
   ""empty"": false
 }";
 
-        public const string ColorsUnstructured =
+        public static string ColorsUnstructured =
 @"{
   ""header"": ""ColorsStructured"",
   ""items"": [
@@ -24,7 +26,7 @@ namespace NShave.Tests.Support
   ""empty"": false
 }";
 
-        public const string Person = 
+        public static string Person = 
 @"{
   ""name"": {
     ""first"": ""John"",
@@ -32,7 +34,7 @@ namespace NShave.Tests.Support
   }
 }";
 
-        public const string Posts =
+        public static string Posts =
 @"{
   ""posts"": [
       {""title"": ""foo"", ""categories"": [{ ""name"": ""tech"" },
@@ -40,6 +42,11 @@ namespace NShave.Tests.Support
       {""title"": ""bar"", ""categories"": [{ ""name"": ""infosec"" },
     { ""name"": ""mobile"" }, { ""name"": ""web"" }]}
   ]
+}";
+
+        public static string DaysOfTheWeek =
+@"{
+  ""days"": [""mon"", ""tue"",""wed"",""thur"", ""fri"",""sat"",""sun""]
 }";
     }
 }

@@ -1,15 +1,14 @@
 ﻿using NShave.Tests.Support;
-using NUnit.Framework;
+using Xunit;
 
 namespace NShave.Tests.Tests
 {
-    [TestFixture]
-    internal class NestedTagTests
+    public class NestedTagConversionTests
     {
-        [TestCase]
+        [Fact]
         public void ConvertMustacheLoopWithVariablesToRazor()
         {
-            const string mustache =
+const string mustache =
 @"{{#items}}
     {{#first}}
         <li><strong>{{name}}</strong></li>
@@ -33,14 +32,15 @@ namespace NShave.Tests.Tests
     }
 
 }";
+
             ConversionAssertion.AssertCorrectWith(mustache, expectedRazor, DataModel.ColorsStructured);
         }
 
-        [TestCase]
+        [Fact]
         public void ConvertMustacheWithNestedLoopOneLevelDeepToRazor()
         {
-            const string mustache =
-@"{{#posts}}
+            
+const string mustache = @"{{#posts}}
     <p>{{title}}</p>
     <ul>
         {{#categories}}
@@ -49,7 +49,7 @@ namespace NShave.Tests.Tests
     </ul>
 {{/posts}}";
 
-            const string expectedRazor =
+        const string expectedRazor =
 @"@foreach (var post in Model.Posts)
 {
     <p>@post.Title</p>

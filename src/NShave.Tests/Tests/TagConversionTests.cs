@@ -1,12 +1,11 @@
 using NShave.Tests.Support;
-using NUnit.Framework;
+using Xunit;
 
 namespace NShave.Tests.Tests
 {
-    [TestFixture]
-    public class CoreConversionTests
+    public class TagConversionTests
     {
-        [TestCase]
+        [Fact]
         public void ConvertMustacheTruthyIfStatementToRazor()
         {
             const string mustache =
@@ -23,7 +22,7 @@ namespace NShave.Tests.Tests
             ConversionAssertion.AssertCorrectWith(mustache, expectedRazor, DataModel.ColorsStructured);
         }
 
-        [TestCase]
+        [Fact]
         public void ConvertMustacheFalseyIfStatementToRazor()
         {
             const string mustache =
@@ -40,7 +39,7 @@ namespace NShave.Tests.Tests
             ConversionAssertion.AssertCorrectWith(mustache, expectedRazor, DataModel.ColorsStructured);
         }
 
-        [TestCase]
+        [Fact]
         public void ConvertMustacheLoopToRazor()
         {
             const string mustache =
@@ -56,7 +55,23 @@ namespace NShave.Tests.Tests
             ConversionAssertion.AssertCorrectWith(mustache, expectedRazor, DataModel.ColorsStructured);
         }
 
-        [TestCase]
+        [Fact]
+        public void ConvertMustacheLoopWithDotSyntaxToRazor()
+        {
+            const string mustache =
+@"{{#days}}
+    <p>{{.}}</p>
+{{/days}}";
+
+            const string expectedRazor =
+@"@foreach (var day in Model.Days)
+{
+    <p>@day</p>
+}";
+            ConversionAssertion.AssertCorrectWith(mustache, expectedRazor, DataModel.DaysOfTheWeek);
+        }
+
+        [Fact]
         public void ConvertMustacheVariableTagToRazor()
         {
             const string mustache = @"<h1>{{header}}</h1>";
@@ -64,7 +79,7 @@ namespace NShave.Tests.Tests
             ConversionAssertion.AssertCorrectWith(mustache, expectedRazor, DataModel.ColorsStructured);
         }
 
-        [TestCase]
+        [Fact]
         public void ConvertMustacheLineWithMultipleVariablesToRazor()
         {
             const string mustache = @"<p><span>{{header}}</span><span>{{header}}</span></p>";
@@ -72,7 +87,7 @@ namespace NShave.Tests.Tests
             ConversionAssertion.AssertCorrectWith(mustache, expectedRazor, DataModel.ColorsStructured);
         }
 
-        [TestCase]
+        [Fact]
         public void ConvertMustacheAccessingObjectPropertyValueToRazor()
         {
             const string mustache = @"{{name.first}} {{name.last}}";
@@ -80,7 +95,7 @@ namespace NShave.Tests.Tests
             ConversionAssertion.AssertCorrectWith(mustache, expectedRazor, DataModel.Person);
         }
 
-        [TestCase]
+        [Fact]
         public void ConvertMustacheCommentsToRazor()
         {
             const string mustache = @"<h1>Today{{! ignore me }}.</h1>";
@@ -88,7 +103,7 @@ namespace NShave.Tests.Tests
             ConversionAssertion.AssertCorrectWith(mustache, expectedRazor, DataModel.Person);
         }
 
-        [TestCase]
+        [Fact]
         public void ConvertMustachePartialToRazor()
         {
             const string mustache = @"{{> user}}";

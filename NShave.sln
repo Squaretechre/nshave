@@ -3,9 +3,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NShave", "NShave\NShave.csproj", "{65A88E71-DDBE-4ACB-925C-85DC7F071642}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{34CC004A-A3BA-406A-A72D-C8582EA9A3BF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NShave.Tests", "NShave.Tests\NShave.Tests.csproj", "{C06F2A4D-145C-49D4-8FA0-7588EED0FD2C}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CB405967-2B41-48FB-9C99-C25D30445083}"
+	ProjectSection(SolutionItems) = preProject
+		global.json = global.json
+	EndProjectSection
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "NShave", "src\NShave\NShave.xproj", "{B1B2F5BF-7D43-456B-8D2D-09E392D1B672}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "NShave.Tests", "src\NShave.Tests\NShave.Tests.xproj", "{07BDCC1B-3423-4B43-976B-E827F9C23D14}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,16 +20,20 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{65A88E71-DDBE-4ACB-925C-85DC7F071642}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{65A88E71-DDBE-4ACB-925C-85DC7F071642}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{65A88E71-DDBE-4ACB-925C-85DC7F071642}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{65A88E71-DDBE-4ACB-925C-85DC7F071642}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C06F2A4D-145C-49D4-8FA0-7588EED0FD2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C06F2A4D-145C-49D4-8FA0-7588EED0FD2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C06F2A4D-145C-49D4-8FA0-7588EED0FD2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C06F2A4D-145C-49D4-8FA0-7588EED0FD2C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1B2F5BF-7D43-456B-8D2D-09E392D1B672}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1B2F5BF-7D43-456B-8D2D-09E392D1B672}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1B2F5BF-7D43-456B-8D2D-09E392D1B672}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1B2F5BF-7D43-456B-8D2D-09E392D1B672}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07BDCC1B-3423-4B43-976B-E827F9C23D14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07BDCC1B-3423-4B43-976B-E827F9C23D14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07BDCC1B-3423-4B43-976B-E827F9C23D14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07BDCC1B-3423-4B43-976B-E827F9C23D14}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B1B2F5BF-7D43-456B-8D2D-09E392D1B672} = {34CC004A-A3BA-406A-A72D-C8582EA9A3BF}
+		{07BDCC1B-3423-4B43-976B-E827F9C23D14} = {34CC004A-A3BA-406A-A72D-C8582EA9A3BF}
 	EndGlobalSection
 EndGlobal

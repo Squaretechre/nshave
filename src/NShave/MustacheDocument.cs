@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -9,8 +8,8 @@ namespace NShave
 {
     public class MustacheDocument
     {
-        private static string _template;
-        private static JObject _dataModel;
+        private readonly string _template;
+        private readonly JObject _dataModel;
         private readonly Scope _scope;
         private readonly ScopeFormat _formatting;
 
