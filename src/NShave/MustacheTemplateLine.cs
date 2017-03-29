@@ -38,19 +38,15 @@ namespace NShave
                 return $"@{_formatting.ScopeNameCorrectedForRendering()}.{variableName}";
             });
 
-        private string ReplaceMustacheWildcardVariablesIn(string line)
-            => Regex.Replace(line, @"{{.}}", match =>
-            {
-                var variableName = VariableNameFromRegexMatch(match);
-                return $"@{_formatting.ScopeNameCorrectedForRendering()}";
-            });
-
         private string ReplaceMustachePartialsIn(string line)
             => Regex.Replace(line, @"{{>(.*?)}}", match =>
             {
                 var partialName = VariableNameFromRegexMatch(match).Trim();
                 return $"{_formatting.ScopeMarker()}Html.Partial(\"_{partialName}\", Model)";
             });
+
+        private string ReplaceMustacheWildcardVariablesIn(string line)
+            => Regex.Replace(line, @"{{.}}", match => $"@{_formatting.ScopeNameCorrectedForRendering()}");
 
         private static string VariableNameFromRegexMatch(Match match)
             => CultureInfo.CurrentCulture.TextInfo.ToTitleCase(match.Groups[1].Value);
