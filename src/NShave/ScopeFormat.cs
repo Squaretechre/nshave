@@ -33,10 +33,9 @@ namespace NShave
         public string PluralToSingularName(string razorPropertyName)
         {
             var propertyName = FirstCharToLower(razorPropertyName);
-            if (razorPropertyName.EndsWith("ies"))
-                propertyName = SingularSpellingForIesEnding(propertyName);
-            else
-                propertyName = SingularSpellingForSEnding(propertyName);
+            propertyName = razorPropertyName.EndsWith("ies") 
+                ? SingularSpellingForIesEnding(propertyName) 
+                : SingularSpellingForSEnding(propertyName);
 
             return propertyName;
         }
