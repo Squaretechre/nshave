@@ -34,7 +34,7 @@ namespace NShave
                     {
                         var mustacheTag = match.Groups[1].Value;
 
-                        templateLine = MatchIsAMustacheTag(mustacheTag) 
+                        templateLine = MatchIsAMustacheTagLine(mustacheTag) 
                             ? new MustacheTag(mustacheTag, _dataModel, _scope, _formatting).ToRazor() 
                             : new MustacheTemplateLine(templateLine, _formatting).ToRazor();
                     }
@@ -47,7 +47,7 @@ namespace NShave
             return razorTemplate.ToString().Trim();
         }
 
-        private static bool MatchIsAMustacheTag(string mustacheTag) 
+        private static bool MatchIsAMustacheTagLine(string mustacheTag) 
             => mustacheTag.First() == '#' 
             || mustacheTag.First() == '^' 
             || mustacheTag.First() == '/';
