@@ -42,6 +42,40 @@ namespace NShave.Tests.Tests
         public void ShouldReportNestingLevelOfZeroWhenInDefaultScope() 
             => AssertCorrectNestingDepth(TemplateOneLineWithOneVariable, 0);
 
+        [Fact]
+        public void ShouldGenerateJsonPathForCurrentScopeStackWithTwoScopesAdded()
+        {
+            const string scopePosts = "posts";
+            const string scopeAuthors = "authors";
+            var scope = new Scope();
+            scope.Enter(scopePosts);
+            scope.Enter(scopeAuthors);
+
+            const string expectedPath = "posts[0].authors[0]";
+            var actualPath = scope.AsJsonPath();
+            Assert.Equal(expectedPath, actualPath);
+        }
+
+        [Fact]
+        public void ShouldGenerateJsonPathForCurrentScopeStackWithFiveScopesAdded()
+        {
+            const string scope1 = "foo";
+            const string scope2 = "bar";
+            const string scope3 = "baz";
+            const string scope4 = "qux";
+            const string scope5 = "quux";
+            var scope = new Scope();
+            scope.Enter(scope1);
+            scope.Enter(scope2);
+            scope.Enter(scope3);
+            scope.Enter(scope4);
+            scope.Enter(scope5);
+
+            const string expectedPath = "foo[0].bar[0].baz[0].qux[0].quux[0]";
+            var actualPath = scope.AsJsonPath();
+            Assert.Equal(expectedPath, actualPath);
+        }
+
         private static void AssertInCorrectScopeName(string mustache, string expectedScopeName)
         {
             var actualScope = ResultingScopeForTemplate(mustache).Current();

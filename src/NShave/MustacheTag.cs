@@ -6,10 +6,10 @@ namespace NShave
 {
     public class MustacheTag
     {
-        private const char InvertedSection = '^';
-        private const char EndSection = '/';
-        private const string RazorCloseBlock = "}";
-        private readonly char _firstChar;
+        private const char InvertedSectionToken = '^';
+        private const char EndSectionToken = '/';
+        private const string RazorCloseBlockToken = "}";
+        private readonly char _firstCharOfTag;
         private readonly string _key;
         private readonly Scope _dataAccessScope;
         private readonly ScopeFormat _formattingScope;
@@ -31,10 +31,10 @@ namespace NShave
         {
             _dataAccessScope = dataAccessScope;
             _formattingScope = formattingScope;
-            _firstChar = mustacheTag.First();
+            _firstCharOfTag = mustacheTag.First();
             _key = mustacheTag.Substring(1, mustacheTag.Length - 1);
 
-            if (_firstChar.Equals(EndSection))
+            if (_firstCharOfTag.Equals(EndSectionToken))
             {
                 _formattingScope.Leave(_key);
                 _dataAccessScope.Leave(_key);
@@ -50,9 +50,9 @@ namespace NShave
             var razor = string.Empty;
             var razorPropertyName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_key);
 
-            if (_firstChar.Equals(EndSection))
+            if (_firstCharOfTag.Equals(EndSectionToken))
             {
-                return $"{_formattingScope.Indentation()}{RazorCloseBlock}{_formattingScope.NewLine()}";
+                return $"{_formattingScope.Indentation()}{RazorCloseBlockToken}{_formattingScope.NewLine()}";
             }
 
             var razorScopeMarker = _formattingScope.ScopeMarker();
@@ -62,7 +62,7 @@ namespace NShave
             switch (_type)
             {
                 case JTokenType.Boolean:
-                    razor = _firstChar.Equals(InvertedSection)
+                    razor = _firstCharOfTag.Equals(InvertedSectionToken)
                         ? string.Format(RazorFalseyIf, indentation, razorScopeMarker, scopeName, razorPropertyName, indentation)
                         : string.Format(RazorTruthyIf, indentation, razorScopeMarker, scopeName, razorPropertyName, indentation);
                     break;

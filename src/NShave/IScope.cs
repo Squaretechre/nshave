@@ -5,5 +5,6 @@ namespace NShave
         bool IsDefault();
         string Current();
         int Nesting();
+        string AsJsonPath();
     }
 }
