@@ -6,10 +6,10 @@ namespace NShave
     public class ScopePresentationFormat : IEnterScope, ILeaveScope
     {
         private const string TabIndentation = "    ";
-        private readonly Scope _dataAccessScope;
-        private readonly Scope _formattingScope;
+        private readonly ScopeDataModel _dataAccessScope;
+        private readonly ScopeDataModel _formattingScope;
 
-        public ScopePresentationFormat(Scope dataAccessScope, Scope formattingScope)
+        public ScopePresentationFormat(ScopeDataModel dataAccessScope, ScopeDataModel formattingScope)
         {
             _dataAccessScope = dataAccessScope;
             _formattingScope = formattingScope;

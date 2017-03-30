@@ -3,12 +3,12 @@ using System.Linq;
 
 namespace NShave
 {
-    public class Scope : IScope, IEnterScope, ILeaveScope
+    public class ScopeDataModel : IScope, IEnterScope, ILeaveScope
     {
         private readonly ScopeType _defaultScope = new ScopeType("Model", TokenType.Default);
         private readonly Stack<ScopeType> _scope;
 
-        public Scope()
+        public ScopeDataModel()
         {
             _scope = new Stack<ScopeType>();
             _scope.Push(_defaultScope);

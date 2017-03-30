@@ -22,7 +22,7 @@ namespace NShave.Tests.Tests
         [Fact]
         public void DefaultScopeNameShouldBeModel()
         {
-            var actualScope = (new Scope()).Current();
+            var actualScope = (new ScopeDataModel()).Current();
             Assert.Equal(actualScope.Name, _defaultScopeType.Name);
         }
 
@@ -45,7 +45,7 @@ namespace NShave.Tests.Tests
         [Fact]
         public void ShouldGenerateJsonPathForCurrentScopeStackWithTwoScopesAdded()
         {
-            var scope = new Scope();
+            var scope = new ScopeDataModel();
             scope.Enter(ArrayScopeTypeWithName("posts"));
             scope.Enter(ArrayScopeTypeWithName("authors"));
 
@@ -58,7 +58,7 @@ namespace NShave.Tests.Tests
         public void ShouldGenerateJsonPathForCurrentScopeStackWithFiveScopesAdded()
         {
 
-            var scope = new Scope();
+            var scope = new ScopeDataModel();
             scope.Enter(ArrayScopeTypeWithName("foo"));
             scope.Enter(ArrayScopeTypeWithName("bar"));
             scope.Enter(ArrayScopeTypeWithName("baz"));
@@ -84,10 +84,10 @@ namespace NShave.Tests.Tests
 
         private static ScopeType ArrayScopeTypeWithName(string name) => new ScopeType(name, TokenType.Array);
  
-        private static Scope ResultingScopeForTemplate(string mustache)
+        private static ScopeDataModel ResultingScopeForTemplate(string mustache)
         {
-            var dataAccessScope = new Scope();
-            var formattingScope = new Scope();
+            var dataAccessScope = new ScopeDataModel();
+            var formattingScope = new ScopeDataModel();
             var formatting = new ScopePresentationFormat(dataAccessScope, formattingScope);
             var model = (JObject)JsonConvert.DeserializeObject(DataModel.ColorsStructured);
             new MustacheDocument(mustache, model, dataAccessScope, formatting).ToRazor();

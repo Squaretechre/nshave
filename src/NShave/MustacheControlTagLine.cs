@@ -23,7 +23,7 @@ namespace NShave
             @"foreach (var {0} in {1}.{2})
 {3}{{";
 
-        private readonly Scope _dataAccessScope;
+        private readonly ScopeDataModel _dataAccessScope;
         private readonly JObject _dataModel;
         private readonly ScopePresentationFormat _formattingScopePresentation;
 
@@ -32,7 +32,7 @@ namespace NShave
         private string _tagKey;
         private JTokenType _type;
 
-        public MustacheControlTagLine(string templateLine, JObject dataModel, Scope dataAccessScope,
+        public MustacheControlTagLine(string templateLine, JObject dataModel, ScopeDataModel dataAccessScope,
             ScopePresentationFormat formattingScopePresentation)
         {
             _templateLine = templateLine;
