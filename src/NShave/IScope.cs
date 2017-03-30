@@ -3,7 +3,7 @@ namespace NShave
     public interface IScope
     {
         bool IsDefault();
-        string Current();
+        ScopeType Current();
         int Nesting();
         string AsJsonPath();
     }

@@ -16,12 +16,21 @@ namespace NShave
 
         public string ToRazor()
         {
+            UpdateScopeForLine(_templateLine);
             var razorLine = ReplaceMustacheCommentsIn(_templateLine);
             razorLine = ReplaceMustacheWildcardVariablesIn(razorLine);
             razorLine = ReplaceMustachePartialsIn(razorLine);
             razorLine = ReplaceMustacheVariablesIn(razorLine);
             razorLine = razorLine.Trim();
             return $"{_formatting.Indentation()}{razorLine}";
+        }
+
+        private void UpdateScopeForLine(string templateLine)
+        {
+            var enterListMatch = Regex.Match(templateLine, @"<ul>", RegexOptions.IgnoreCase);
+            var exitListMatch = Regex.Match(templateLine, @"</ul>", RegexOptions.IgnoreCase);
+            if (enterListMatch.Success) _formatting.Enter(new ScopeType("ul", TokenType.HtmlUnorderedList));
+            if (exitListMatch.Success) _formatting.Leave("ul");
         }
 
         private static string ReplaceMustacheCommentsIn(string line)
@@ -42,7 +51,7 @@ namespace NShave
             => Regex.Replace(line, @"{{>(.*?)}}", match =>
             {
                 var partialName = VariableNameFromRegexMatch(match).Trim();
-                return $"{_formatting.ScopeMarker()}Html.Partial(\"_{partialName}\", Model)";
+                return _formatting.ApplyScopeMarker($"Html.Partial(\"_{partialName}\", Model)");
             });
 
         private string ReplaceMustacheWildcardVariablesIn(string line)

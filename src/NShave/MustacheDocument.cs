@@ -30,13 +30,14 @@ namespace NShave
                 while ((templateLine = reader.ReadLine()) != null)
                 {
                     var match = Regex.Match(templateLine, @"{{(.*)}}", RegexOptions.IgnoreCase);
-                    if (match.Success)
+                    if (MatchIsAMustacheTagLine(match))
                     {
                         var mustacheTag = match.Groups[1].Value;
-
-                        templateLine = MatchIsAMustacheTagLine(mustacheTag) 
-                            ? new MustacheTag(mustacheTag, _dataModel, _scope, _formatting).ToRazor() 
-                            : new MustacheTemplateLine(templateLine, _formatting).ToRazor();
+                        templateLine = new MustacheTag(mustacheTag, _dataModel, _scope, _formatting).ToRazor();
+                    }
+                    else
+                    {
+                        templateLine = new MustacheTemplateLine(templateLine, _formatting).ToRazor();
                     }
 
                     razorTemplate.Append(templateLine);
@@ -47,9 +48,10 @@ namespace NShave
             return razorTemplate.ToString().Trim();
         }
 
-        private static bool MatchIsAMustacheTagLine(string mustacheTag) 
-            => mustacheTag.First() == '#' 
-            || mustacheTag.First() == '^' 
-            || mustacheTag.First() == '/';
+        private static bool MatchIsAMustacheTagLine(Match mustacheTag) 
+            => mustacheTag.Success &&
+            (mustacheTag.Groups[1].Value.First() == '#' 
+            || mustacheTag.Groups[1].Value.First() == '^' 
+            || mustacheTag.Groups[1].Value.First() == '/');
     }
 }
