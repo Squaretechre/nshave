@@ -3,23 +3,23 @@ using System.Text.RegularExpressions;
 
 namespace NShave.Mustache
 {
-    public class MustacheControlTagLineRegexMatch
+    public class MustacheBehaviourTagRegex
     {
         private readonly string _mustacheTemplateLine;
         private string _result;
 
-        public MustacheControlTagLineRegexMatch(string mustacheTemplateLine)
+        public MustacheBehaviourTagRegex(string mustacheTemplateLine)
         {
             _mustacheTemplateLine = mustacheTemplateLine;
         }
 
-        public MustacheControlTagLineRegexMatch Success(Func<string> success)
+        public MustacheBehaviourTagRegex Match(Func<string> success)
         {
             if (LineContainsControlFlowTag(_mustacheTemplateLine)) _result = success();
             return this;
         }
 
-        public MustacheControlTagLineRegexMatch Fail(Func<string> fail)
+        public MustacheBehaviourTagRegex NoMatch(Func<string> fail)
         {
             if (!LineContainsControlFlowTag(_mustacheTemplateLine)) _result = fail();
             return this;

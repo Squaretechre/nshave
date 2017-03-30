@@ -26,20 +26,20 @@ namespace NShave.Mustache
         {
             using (var reader = new StringReader(_template))
             {
-                string templateLine;
-                while ((templateLine = reader.ReadLine()) != null)
+                string mustacheLine;
+                while ((mustacheLine = reader.ReadLine()) != null)
                 {
-                    new MustacheControlTagLineRegexMatch(templateLine)
-                        .Success(new MustacheControlTagLine(templateLine, _dataModel, _scope, _formatting).ToRazor)
-                        .Fail(new MustacheVariableTagLine(templateLine, _formatting).ToRazor)
-                        .Result(AppendTemplateLine);
+                    new MustacheBehaviourTagRegex(mustacheLine)
+                        .Match(new MustacheBehaviourTagLine(mustacheLine, _dataModel, _scope, _formatting).ToRazor)
+                        .NoMatch(new MustacheInlineTagLine(mustacheLine, _formatting).ToRazor)
+                        .Result(AppendRazorLine);
                 }
             }
 
             return _razorTemplate.ToString().Trim();
         }
 
-        private void AppendTemplateLine(string line)
+        private void AppendRazorLine(string line)
         {
             _razorTemplate.Append(line);
             _razorTemplate.Append(_formatting.NewLine());

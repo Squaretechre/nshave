@@ -5,12 +5,12 @@ using NShave.Scope;
 
 namespace NShave.Mustache
 {
-    public class MustacheVariableTagLine
+    public class MustacheInlineTagLine
     {
         private readonly ScopePresentation _formatting;
         private readonly string _templateLine;
 
-        public MustacheVariableTagLine(string templateLine, ScopePresentation formatting)
+        public MustacheInlineTagLine(string templateLine, ScopePresentation formatting)
         {
             _templateLine = templateLine;
             _formatting = formatting;

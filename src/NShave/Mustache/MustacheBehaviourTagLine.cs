@@ -7,7 +7,7 @@ using NShave.Scope;
 
 namespace NShave.Mustache
 {
-    public class MustacheControlTagLine
+    public class MustacheBehaviourTagLine
     {
         private const char InvertedSectionToken = '^';
         private const char EndSectionToken = '/';
@@ -34,7 +34,7 @@ namespace NShave.Mustache
         private string _tagKey;
         private JTokenType _type;
 
-        public MustacheControlTagLine(string templateLine, JObject dataModel, ScopeDataModel dataAccessScope,
+        public MustacheBehaviourTagLine(string templateLine, JObject dataModel, ScopeDataModel dataAccessScope,
             ScopePresentation formattingScopePresentation)
         {
             _templateLine = templateLine;
