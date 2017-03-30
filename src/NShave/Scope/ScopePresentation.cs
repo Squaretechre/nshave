@@ -1,15 +1,15 @@
-﻿using System;
+using System;
 using System.Linq;
 
-namespace NShave
+namespace NShave.Scope
 {
-    public class ScopePresentationFormat : IEnterScope, ILeaveScope
+    public class ScopePresentation : IEnterScope, ILeaveScope
     {
         private const string TabIndentation = "    ";
         private readonly ScopeDataModel _dataAccessScope;
         private readonly ScopeDataModel _formattingScope;
 
-        public ScopePresentationFormat(ScopeDataModel dataAccessScope, ScopeDataModel formattingScope)
+        public ScopePresentation(ScopeDataModel dataAccessScope, ScopeDataModel formattingScope)
         {
             _dataAccessScope = dataAccessScope;
             _formattingScope = formattingScope;

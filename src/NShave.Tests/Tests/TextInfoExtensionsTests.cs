@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using NShave.Extensions;
 using Xunit;
 
 namespace NShave.Tests.Tests

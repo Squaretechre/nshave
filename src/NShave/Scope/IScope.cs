@@ -1,10 +1,10 @@
-namespace NShave
+namespace NShave.Scope
 {
     public interface IScope
     {
-        bool IsDefault();
-        ScopeType Current();
         int Nesting();
+        bool IsDefault();
         string AsJsonPath();
+        ScopeType Current();
     }
 }

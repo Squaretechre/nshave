@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
+using NShave.Mustache;
 
-namespace NShave
+namespace NShave.Scope
 {
     public class ScopeDataModel : IScope, IEnterScope, ILeaveScope
     {
@@ -25,15 +26,15 @@ namespace NShave
 
         public ScopeType Current() => _scope.Peek();
 
-        public int Nesting() => (_scope.Count - 1) - _scope.Count(s => s.IsPresentational());
+        public int Nesting() => _scope.Count - 1 - _scope.Count(s => s.IsPresentational());
 
         public string AsJsonPath() => $"{CreatePathFromScopeStack()}[0]";
 
-        private string CreatePathFromScopeStack() => 
+        private string CreatePathFromScopeStack() =>
             _scope
-            .Reverse()
-            .Skip(1)
-            .Select(s => s.Name)
-            .Aggregate((current, next) => $"{current}[0].{next}");
+                .Reverse()
+                .Skip(1)
+                .Select(s => s.Name)
+                .Aggregate((current, next) => $"{current}[0].{next}");
     }
 }

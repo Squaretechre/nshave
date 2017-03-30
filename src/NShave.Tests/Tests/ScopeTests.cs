@@ -1,5 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using NShave.Mustache;
+using NShave.Scope;
 using NShave.Tests.Support;
 using Xunit;
 
@@ -88,7 +90,7 @@ namespace NShave.Tests.Tests
         {
             var dataAccessScope = new ScopeDataModel();
             var formattingScope = new ScopeDataModel();
-            var formatting = new ScopePresentationFormat(dataAccessScope, formattingScope);
+            var formatting = new ScopePresentation(dataAccessScope, formattingScope);
             var model = (JObject)JsonConvert.DeserializeObject(DataModel.ColorsStructured);
             new MustacheDocument(mustache, model, dataAccessScope, formatting).ToRazor();
             return dataAccessScope;

@@ -1,14 +1,16 @@
 using System.Globalization;
 using System.Text.RegularExpressions;
+using NShave.Extensions;
+using NShave.Scope;
 
-namespace NShave
+namespace NShave.Mustache
 {
     public class MustacheVariableTagLine
     {
-        private readonly ScopePresentationFormat _formatting;
+        private readonly ScopePresentation _formatting;
         private readonly string _templateLine;
 
-        public MustacheVariableTagLine(string templateLine, ScopePresentationFormat formatting)
+        public MustacheVariableTagLine(string templateLine, ScopePresentation formatting)
         {
             _templateLine = templateLine;
             _formatting = formatting;

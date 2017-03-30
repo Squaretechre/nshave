@@ -1,18 +1,19 @@
 using System.IO;
 using System.Text;
 using Newtonsoft.Json.Linq;
+using NShave.Scope;
 
-namespace NShave
+namespace NShave.Mustache
 {
     public class MustacheDocument
     {
         private readonly string _template;
         private readonly JObject _dataModel;
         private readonly ScopeDataModel _scope;
-        private readonly ScopePresentationFormat _formatting;
+        private readonly ScopePresentation _formatting;
         private readonly StringBuilder _razorTemplate;
 
-        public MustacheDocument(string template, JObject dataModel, ScopeDataModel scope, ScopePresentationFormat formatting)
+        public MustacheDocument(string template, JObject dataModel, ScopeDataModel scope, ScopePresentation formatting)
         {
             _template = template;
             _dataModel = dataModel;

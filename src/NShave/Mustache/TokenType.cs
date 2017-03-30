@@ -1,4 +1,4 @@
-﻿namespace NShave
+namespace NShave.Mustache
 {
     public enum TokenType
     {

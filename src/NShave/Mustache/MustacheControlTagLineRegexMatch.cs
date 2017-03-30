@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Text.RegularExpressions;
 
-namespace NShave
+namespace NShave.Mustache
 {
     public class MustacheControlTagLineRegexMatch
     {

@@ -1,4 +1,6 @@
-﻿namespace NShave
+using NShave.Mustache;
+
+namespace NShave.Scope
 {
     public class ScopeType
     {

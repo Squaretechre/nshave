@@ -1,4 +1,4 @@
-﻿namespace NShave
+﻿namespace NShave.Scope
 {
     public interface ILeaveScope
     {

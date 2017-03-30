@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace NShave
+namespace NShave.Extensions
 {
     public static class TextInfoExtensions
     {

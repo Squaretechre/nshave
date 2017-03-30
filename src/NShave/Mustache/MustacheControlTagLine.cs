@@ -1,9 +1,11 @@
-﻿using System.Globalization;
+using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json.Linq;
+using NShave.Extensions;
+using NShave.Scope;
 
-namespace NShave
+namespace NShave.Mustache
 {
     public class MustacheControlTagLine
     {
@@ -25,7 +27,7 @@ namespace NShave
 
         private readonly ScopeDataModel _dataAccessScope;
         private readonly JObject _dataModel;
-        private readonly ScopePresentationFormat _formattingScopePresentation;
+        private readonly ScopePresentation _formattingScopePresentation;
 
         private readonly string _templateLine;
         private char _firstCharOfTag;
@@ -33,7 +35,7 @@ namespace NShave
         private JTokenType _type;
 
         public MustacheControlTagLine(string templateLine, JObject dataModel, ScopeDataModel dataAccessScope,
-            ScopePresentationFormat formattingScopePresentation)
+            ScopePresentation formattingScopePresentation)
         {
             _templateLine = templateLine;
             _dataModel = dataModel;
