@@ -5,10 +5,10 @@ namespace NShave
 {
     public class MustacheVariableTagLine
     {
-        private readonly ScopeFormat _formatting;
+        private readonly ScopePresentationFormat _formatting;
         private readonly string _templateLine;
 
-        public MustacheVariableTagLine(string templateLine, ScopeFormat formatting)
+        public MustacheVariableTagLine(string templateLine, ScopePresentationFormat formatting)
         {
             _templateLine = templateLine;
             _formatting = formatting;

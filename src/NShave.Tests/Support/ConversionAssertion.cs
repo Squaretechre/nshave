@@ -10,7 +10,7 @@ namespace NShave.Tests.Support
         {
             var dataAccessScope = new Scope();
             var formattingScope = new Scope();
-            var formatting = new ScopeFormat(dataAccessScope, formattingScope);
+            var formatting = new ScopePresentationFormat(dataAccessScope, formattingScope);
             var model = (JObject)JsonConvert.DeserializeObject(dataModel);
             var convertedMustache = new MustacheDocument(mustache, model, dataAccessScope, formatting).ToRazor();
             Assert.Equal(expectedRazor, convertedMustache);

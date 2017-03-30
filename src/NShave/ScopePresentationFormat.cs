@@ -3,13 +3,13 @@ using System.Linq;
 
 namespace NShave
 {
-    public class ScopeFormat : IEnterScope, ILeaveScope
+    public class ScopePresentationFormat : IEnterScope, ILeaveScope
     {
         private const string TabIndentation = "    ";
         private readonly Scope _dataAccessScope;
         private readonly Scope _formattingScope;
 
-        public ScopeFormat(Scope dataAccessScope, Scope formattingScope)
+        public ScopePresentationFormat(Scope dataAccessScope, Scope formattingScope)
         {
             _dataAccessScope = dataAccessScope;
             _formattingScope = formattingScope;

@@ -9,10 +9,10 @@ namespace NShave
         private readonly string _template;
         private readonly JObject _dataModel;
         private readonly Scope _scope;
-        private readonly ScopeFormat _formatting;
+        private readonly ScopePresentationFormat _formatting;
         private readonly StringBuilder _razorTemplate;
 
-        public MustacheDocument(string template, JObject dataModel, Scope scope, ScopeFormat formatting)
+        public MustacheDocument(string template, JObject dataModel, Scope scope, ScopePresentationFormat formatting)
         {
             _template = template;
             _dataModel = dataModel;
