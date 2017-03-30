@@ -3,12 +3,12 @@ using System.Text.RegularExpressions;
 
 namespace NShave
 {
-    public class MustacheTemplateLine
+    public class MustacheVariableTagLine
     {
         private readonly ScopeFormat _formatting;
         private readonly string _templateLine;
 
-        public MustacheTemplateLine(string templateLine, ScopeFormat formatting)
+        public MustacheVariableTagLine(string templateLine, ScopeFormat formatting)
         {
             _templateLine = templateLine;
             _formatting = formatting;
