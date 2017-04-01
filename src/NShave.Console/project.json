@@ -1,13 +1,11 @@
 {
   "version": "1.0.0-*",
+
   "dependencies": {
-    "System.Runtime.Serialization.Primitives": "4.3.0",
-    "xunit": "2.2.0-*",
-    "dotnet-test-xunit": "2.2.0-*",
-    "NShave": "1.0.0-*",
-    "NETStandard.Library": "1.6.0"
+    "NETStandard.Library": "1.6.0",
+    "Newtonsoft.Json": "10.0.1",
+    "NShave": "1.0.0-*"
   },
-  "testRunner": "xunit",
   "frameworks": {
     "netcoreapp1.1": {
       "dependencies": {
