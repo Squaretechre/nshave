@@ -1,6 +1,6 @@
 namespace NShave.Tests.Support
 {
-    internal static class DataModel
+    public static class DataModel
     {
         public static string ColorsStructured =
 @"{
