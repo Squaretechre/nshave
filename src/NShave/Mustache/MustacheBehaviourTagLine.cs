@@ -48,7 +48,7 @@ namespace NShave.Mustache
             _tagKey = Regex.Match(_templateLine, @"{{(.*)}}", RegexOptions.IgnoreCase).Groups[1].Value;
 
             _firstCharOfTag = _tagKey.First();
-            _tagKey = _tagKey.Substring(1, _tagKey.Length - 1);
+            _tagKey = _tagKey.Substring(1, _tagKey.Length - 1).Trim();
 
             var razor = string.Empty;
             var razorPropertyName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_tagKey);
@@ -56,9 +56,8 @@ namespace NShave.Mustache
             if (EndSectionToken.Equals(_firstCharOfTag)) LeaveCurrentScope();
             if (EndSectionToken.Equals(_firstCharOfTag)) return RazorCloseBlock();
 
-            _type = _dataAccessScope.IsDefault()
-                ? _dataModel[_tagKey].Type
-                : _dataModel.SelectToken(_dataAccessScope.AsJsonPath())[_tagKey].Type;
+            var dataModel = new DataModel(_dataAccessScope, _dataModel);
+            _type = dataModel.TypeForTagKey(_tagKey);
 
             var indentation = _formattingScopePresentation.Indentation();
             var scopeName = _formattingScopePresentation.ScopeNameCorrectedForRendering();

@@ -91,7 +91,7 @@ namespace NShave.Tests.Tests
             var dataAccessScope = new ScopeDataModel();
             var formattingScope = new ScopeDataModel();
             var formatting = new ScopePresentation(dataAccessScope, formattingScope);
-            var model = (JObject)JsonConvert.DeserializeObject(DataModel.ColorsStructured);
+            var model = (JObject)JsonConvert.DeserializeObject(DataModels.ColorsStructured);
             new MustacheDocument(mustache, model, dataAccessScope, formatting).ToRazor();
             return dataAccessScope;
         }

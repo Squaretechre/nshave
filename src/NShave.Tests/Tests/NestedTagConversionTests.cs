@@ -31,7 +31,7 @@ const string mustache =
     }
 }";
 
-            ConversionAssertion.AssertCorrectWith(mustache, expectedRazor, DataModel.ColorsStructured);
+            ConversionAssertion.AssertCorrectWith(mustache, expectedRazor, DataModels.ColorsStructured);
         }
 
         [Fact]
@@ -60,7 +60,7 @@ const string mustache =
     </ul>
 }";
 
-            ConversionAssertion.AssertCorrectWith(mustache, expectedRazor, DataModel.Posts);
+            ConversionAssertion.AssertCorrectWith(mustache, expectedRazor, DataModels.Posts);
         }
 
         [Fact]
@@ -101,7 +101,7 @@ const string expectedRazor =
         }
     }
 }";
-            ConversionAssertion.AssertCorrectWith(mustache, expectedRazor, DataModel.PostWithNestedLoops);
+            ConversionAssertion.AssertCorrectWith(mustache, expectedRazor, DataModels.PostWithNestedLoops);
         }
     }
 }

@@ -48,7 +48,7 @@ namespace NShave.Console.Tests
 }";
             var adapter = this;
             adapter.MustacheTemplate = mustache;
-            adapter.Data = DataModel.PostWithNestedLoops;
+            adapter.Data = DataModels.PostWithNestedLoops;
             var domain = new Domain(adapter);
             var actualConvertedRazor = string.Empty;
             domain.ToRazor(convertedMustache => actualConvertedRazor = convertedMustache);

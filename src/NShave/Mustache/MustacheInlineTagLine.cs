@@ -53,7 +53,7 @@ namespace NShave.Mustache
             => Regex.Replace(line, @"{{>(.*?)}}", match =>
             {
                 var partialName = VariableNameFromRegexMatch(match).Trim();
-                return _formatting.ApplyScopeMarker($"Html.Partial(\"_{partialName}\", Model)");
+                return _formatting.ApplyScopeMarker($"Html.Partial(\"_{partialName}\", (object)Model)");
             });
 
         private string ReplaceMustacheWildcardVariablesIn(string line)

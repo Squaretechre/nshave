@@ -19,7 +19,7 @@ namespace NShave.Tests.Tests
     <p>hello, world!</p>
 }";
 
-            ConversionAssertion.AssertCorrectWith(mustache, expectedRazor, DataModel.ColorsStructured);
+            ConversionAssertion.AssertCorrectWith(mustache, expectedRazor, DataModels.ColorsStructured);
         }
 
         [Fact]
@@ -36,7 +36,7 @@ namespace NShave.Tests.Tests
     <p>hello, world!</p>
 }";
 
-            ConversionAssertion.AssertCorrectWith(mustache, expectedRazor, DataModel.ColorsStructured);
+            ConversionAssertion.AssertCorrectWith(mustache, expectedRazor, DataModels.ColorsStructured);
         }
 
         [Fact]
@@ -52,7 +52,7 @@ namespace NShave.Tests.Tests
 {
     <p>hello, world!</p>
 }";
-            ConversionAssertion.AssertCorrectWith(mustache, expectedRazor, DataModel.ColorsStructured);
+            ConversionAssertion.AssertCorrectWith(mustache, expectedRazor, DataModels.ColorsStructured);
         }
 
         [Fact]
@@ -68,7 +68,7 @@ namespace NShave.Tests.Tests
 {
     <p>@day</p>
 }";
-            ConversionAssertion.AssertCorrectWith(mustache, expectedRazor, DataModel.DaysOfTheWeek);
+            ConversionAssertion.AssertCorrectWith(mustache, expectedRazor, DataModels.DaysOfTheWeek);
         }
 
         [Fact]
@@ -76,7 +76,7 @@ namespace NShave.Tests.Tests
         {
             const string mustache = @"<h1>{{header}}</h1>";
             const string expectedRazor = @"<h1>@Model.Header</h1>";
-            ConversionAssertion.AssertCorrectWith(mustache, expectedRazor, DataModel.ColorsStructured);
+            ConversionAssertion.AssertCorrectWith(mustache, expectedRazor, DataModels.ColorsStructured);
         }
 
         [Fact]
@@ -84,7 +84,7 @@ namespace NShave.Tests.Tests
         {
             const string mustache = @"<p><span>{{header}}</span><span>{{header}}</span></p>";
             const string expectedRazor = @"<p><span>@Model.Header</span><span>@Model.Header</span></p>";
-            ConversionAssertion.AssertCorrectWith(mustache, expectedRazor, DataModel.ColorsStructured);
+            ConversionAssertion.AssertCorrectWith(mustache, expectedRazor, DataModels.ColorsStructured);
         }
 
         [Fact]
@@ -92,7 +92,7 @@ namespace NShave.Tests.Tests
         {
             const string mustache = @"{{name.first}} {{name.last}}";
             const string expectedRazor = @"@Model.Name.First @Model.Name.Last";
-            ConversionAssertion.AssertCorrectWith(mustache, expectedRazor, DataModel.Person);
+            ConversionAssertion.AssertCorrectWith(mustache, expectedRazor, DataModels.Person);
         }
 
         [Fact]
@@ -100,15 +100,15 @@ namespace NShave.Tests.Tests
         {
             const string mustache = @"<h1>Today{{! ignore me }}.</h1>";
             const string expectedRazor = @"<h1>Today@* ignore me *@.</h1>";
-            ConversionAssertion.AssertCorrectWith(mustache, expectedRazor, DataModel.Person);
+            ConversionAssertion.AssertCorrectWith(mustache, expectedRazor, DataModels.Person);
         }
 
         [Fact]
         public void ConvertMustachePartialToRazor()
         {
             const string mustache = @"{{> user}}";
-            const string expectedRazor = @"@Html.Partial(""_User"", Model)";
-            ConversionAssertion.AssertCorrectWith(mustache, expectedRazor, DataModel.Person);
+            const string expectedRazor = @"@Html.Partial(""_User"", (object)Model)";
+            ConversionAssertion.AssertCorrectWith(mustache, expectedRazor, DataModels.Person);
         }
     }
 }
