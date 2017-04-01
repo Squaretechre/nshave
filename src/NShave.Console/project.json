@@ -1,6 +1,9 @@
 {
   "version": "1.0.0-*",
-
+  "buildOptions": {
+    "emitEntryPoint": true
+  },
+  "entryPoint": "NShave.Console.Program.Main",
   "dependencies": {
     "NETStandard.Library": "1.6.0",
     "Newtonsoft.Json": "10.0.1",
@@ -16,6 +19,10 @@
     }
   },
   "runtimes": {
-    "win10-x64": {}
+    "win10-x64": {},
+    "win8-x64": {},
+    "osx.10.11-x64": {
+      "#import": [ "osx.10.11", "osx.10.10-x64" ]
+    }
   }
 }
