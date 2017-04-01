@@ -3,8 +3,8 @@ using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json.Linq;
-using NShave.Extensions;
 using NShave.Scope;
+using NShave.Extensions;
 
 namespace NShave.Mustache
 {
@@ -32,9 +32,9 @@ namespace NShave.Mustache
 
         private readonly string _templateLine;
         private char _firstCharOfTag;
+        private string _leadingWhiteSpace;
         private string _tagKey;
         private JTokenType _type;
-        private string _leadingWhiteSpace;
 
         public MustacheBehaviourTagLine(string templateLine, JObject dataModel, ScopeDataModel dataAccessScope,
             ScopePresentation formattingScopePresentation)

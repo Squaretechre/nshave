@@ -1,30 +1,30 @@
 ﻿@Html.Partial("_Organisms-header", (object)Model)
 <main role="main">
 
-    @if (Model.Hero)
-    {
-        @Html.Partial("_Molecules-block-hero", (object)Model)
-    }
+	@if (Model.Hero)
+	{
+		@Html.Partial("_Molecules-block-hero", (object)Model)
+	}
 
-    <div class="l">
-        @Html.Partial("_Organisms-tout-list", (object)Model)
-    </div>
+	<div class="l">
+		@Html.Partial("_Organisms-tout-list", (object)Model)
+	</div>
 
-    <div class="l l--two-col">
-        <div class="l-main">
-            @if (Model.LatestPosts)
-            {
-                @Html.Partial("_Organisms-section-media-list", (object)Model)
-            }
-        </div><!--end .l-main-->
+	<div class="l l--two-col">
+		<div class="l-main">
+			@if (Model.LatestPosts)
+			{
+			@Html.Partial("_Organisms-section-media-list", (object)Model)
+			}
+		</div><!--end .l-main-->
 
-        <div class="l-sidebar">
-            @if (Model.FeaturedPeople)
-            {
-                @Html.Partial("_Organisms-section-media-list", (object)Model)
-            }
-        </div><!--end .l-sidebar-->
+		<div class="l-sidebar">
+			@if (Model.FeaturedPeople)
+			{
+			@Html.Partial("_Organisms-section-media-list", (object)Model)
+			}
+		</div><!--end .l-sidebar-->
 
-    </div><!--end l--two-col-->
+	</div><!--end l--two-col-->
 </main>
-@Html.Partial("_Organisms-header", (object)Model)
+@Html.Partial("_Organisms-footer", (object)Model)

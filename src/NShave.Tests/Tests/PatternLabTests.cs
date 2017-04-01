@@ -1,11 +1,12 @@
 ﻿using System.IO;
 using NShave.Tests.Support;
+using Xunit;
 
 namespace NShave.Tests.Tests
 {
     public class PatternLabTests
     {
-        //[Fact]
+        [Fact]
         public void ShouldConvertPatternLabPageTemplateToRazor()
         {
             var workingDir = FilePath.WorkingDirectory();
