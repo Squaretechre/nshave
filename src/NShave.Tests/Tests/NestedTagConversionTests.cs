@@ -53,10 +53,10 @@ const string mustache =
 {
     <p>@post.Title</p>
     <ul>
-    @foreach (var category in post.Categories)
-    {
-        <li>@category.Name</li>
-    }
+        @foreach (var category in post.Categories)
+        {
+            <li>@category.Name</li>
+        }
     </ul>
 }";
 
@@ -85,19 +85,19 @@ const string mustache =
 const string expectedRazor =
 @"@foreach (var post in Model.Posts)
 {
-    <p>@post.Title</p>
+<p>@post.Title</p>
     <ul>
-    @foreach (var category in post.Categories)
-    {
+        @foreach (var category in post.Categories)
+        {
         <li>@category.Name</li>
-    }
+        }
     </ul>
     foreach (var author in post.Authors)
     {
-        <p>@author.Name</p>
+    <p>@author.Name</p>
         foreach (var socialmedia in author.Socialmedia)
         {
-            <span>@socialmedia.Url</span>
+        <span>@socialmedia.Url</span>
         }
     }
 }";

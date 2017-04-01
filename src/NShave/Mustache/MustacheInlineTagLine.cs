@@ -1,3 +1,4 @@
+using System;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using NShave.Extensions;
@@ -19,12 +20,15 @@ namespace NShave.Mustache
         public string ToRazor()
         {
             UpdateScopeForLine(_templateLine);
+            var firstNonWhiteSpaceChar = Regex.Match(_templateLine, @"[^\s\\]").Groups[0].Value;
+            var indexOfFirstNonWhiteSpaceChar = _templateLine.IndexOf(firstNonWhiteSpaceChar, StringComparison.Ordinal);
+            var leadingWhiteSpace = _templateLine.Substring(0, indexOfFirstNonWhiteSpaceChar);
             var razorLine = ReplaceMustacheCommentsIn(_templateLine);
             razorLine = ReplaceMustacheWildcardVariablesIn(razorLine);
             razorLine = ReplaceMustachePartialsIn(razorLine);
             razorLine = ReplaceMustacheVariablesIn(razorLine);
             razorLine = razorLine.Trim();
-            return $"{_formatting.Indentation()}{razorLine}";
+            return $"{leadingWhiteSpace}{razorLine}";
         }
 
         private void UpdateScopeForLine(string templateLine)

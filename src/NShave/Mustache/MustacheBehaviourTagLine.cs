@@ -1,3 +1,4 @@
+using System;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -33,6 +34,7 @@ namespace NShave.Mustache
         private char _firstCharOfTag;
         private string _tagKey;
         private JTokenType _type;
+        private string _leadingWhiteSpace;
 
         public MustacheBehaviourTagLine(string templateLine, JObject dataModel, ScopeDataModel dataAccessScope,
             ScopePresentation formattingScopePresentation)
@@ -45,6 +47,9 @@ namespace NShave.Mustache
 
         public string ToRazor()
         {
+            var firstNonWhiteSpaceChar = Regex.Match(_templateLine, @"[^\s\\]").Groups[0].Value;
+            var indexOfFirstNonWhiteSpaceChar = _templateLine.IndexOf(firstNonWhiteSpaceChar, StringComparison.Ordinal);
+            _leadingWhiteSpace = _templateLine.Substring(0, indexOfFirstNonWhiteSpaceChar);
             _tagKey = Regex.Match(_templateLine, @"{{(.*)}}", RegexOptions.IgnoreCase).Groups[1].Value;
 
             _firstCharOfTag = _tagKey.First();
@@ -59,7 +64,6 @@ namespace NShave.Mustache
             var dataModel = new DataModel(_dataAccessScope, _dataModel);
             _type = dataModel.TypeForTagKey(_tagKey);
 
-            var indentation = _formattingScopePresentation.Indentation();
             var scopeName = _formattingScopePresentation.ScopeNameCorrectedForRendering();
 
             razor = _formattingScopePresentation.ApplyScopeMarker(razor);
@@ -68,13 +72,13 @@ namespace NShave.Mustache
             {
                 case JTokenType.Boolean:
                     razor = InvertedSectionToken.Equals(_firstCharOfTag)
-                        ? $"{indentation}{razor}{string.Format(RazorFalseyIf, scopeName, razorPropertyName, indentation)}"
-                        : $"{indentation}{razor}{string.Format(RazorTruthyIf, scopeName, razorPropertyName, indentation)}";
+                        ? $"{_leadingWhiteSpace}{razor}{string.Format(RazorFalseyIf, scopeName, razorPropertyName, _leadingWhiteSpace)}"
+                        : $"{_leadingWhiteSpace}{razor}{string.Format(RazorTruthyIf, scopeName, razorPropertyName, _leadingWhiteSpace)}";
                     break;
                 case JTokenType.Array:
                     var propertyNameSingular = _formattingScopePresentation.PluralToSingularName(razorPropertyName);
                     razor =
-                        $"{indentation}{razor}{string.Format(RazorForEach, propertyNameSingular, scopeName, razorPropertyName, indentation)}";
+                        $"{_leadingWhiteSpace}{razor}{string.Format(RazorForEach, propertyNameSingular, scopeName, razorPropertyName, _leadingWhiteSpace)}";
                     _dataAccessScope.Enter(new ScopeType(_tagKey, TokenType.Array));
                     break;
             }
@@ -90,6 +94,6 @@ namespace NShave.Mustache
         }
 
         private string RazorCloseBlock()
-            => $"{_formattingScopePresentation.Indentation()}{RazorCloseBlockToken}";
+            => $"{_leadingWhiteSpace}{RazorCloseBlockToken}";
     }
 }
