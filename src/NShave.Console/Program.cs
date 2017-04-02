@@ -1,7 +1,8 @@
-﻿using System.IO;
-
-namespace NShave.Console
+﻿namespace NShave.Console
 {
+    using System;
+    using System.IO;
+
     public class Program 
     {
         public string MustacheTemplate { get; set; }
@@ -9,21 +10,38 @@ namespace NShave.Console
 
         public static void Main(string[] args)
         {
-            var mustachePath = args[0];
-            var dataPath = args[1];
-
-            var adapter = new Adapter
+            try
             {
-                MustacheTemplate = File.ReadAllText(mustachePath),
-                Data = File.ReadAllText(dataPath)
-            };
+                var mustachePath = args[0];
+                var dataPath = args[1];
 
-            System.Console.WriteLine(adapter.MustacheTemplate);
-            System.Console.WriteLine(adapter.Data);
+                var adapter = new Adapter
+                {
+                    MustacheTemplate = File.ReadAllText(mustachePath),
+                    Data = File.ReadAllText(dataPath)
+                };
 
-            var domain = new Domain(adapter);
-            domain.ToRazor(System.Console.WriteLine);
-            System.Console.Read();
+                var domain = new Domain(adapter);
+                domain.ToRazor((razor) =>
+                {
+                    Console.WriteLine(razor);
+                    var fileName = ToRazorFileName(mustachePath);
+                    File.WriteAllText(fileName, razor);
+                });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error, please review the parameters.");
+                Console.WriteLine($"Failed with error: {ex.Message}");
+            }
+        }
+
+        private static string ToRazorFileName(string mustachePath)
+        {
+            var fileName = mustachePath.Replace(".mustache", ".cshtml");
+            fileName = fileName.Replace(fileName, char.ToUpper(fileName[0]) + fileName.Substring(1));
+            fileName = $"_{fileName}";
+            return fileName;
         }
 
         private class Adapter : IDomainAdapter
