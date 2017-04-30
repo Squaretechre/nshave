@@ -1,6 +1,3 @@
-![logo](http://www.danparkin.co.uk/nshave-logo-small.png "NShave Logo")
-
-
 # NShave #
 
 Convert Mustache templates to Razor templates.
