@@ -1,4 +1,4 @@
-![logo](http://presure.co.uk/nshave-logo-small.png "NShave Logo")
+![logo](http://www.danparkin.co.uk/nshave-logo-small.png "NShave Logo")
 
 
 # NShave #
