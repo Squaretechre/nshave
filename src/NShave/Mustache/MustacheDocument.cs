@@ -29,9 +29,9 @@ namespace NShave.Mustache
                 string mustacheLine;
                 while ((mustacheLine = reader.ReadLine()) != null)
                 {
-                    new MustacheBehaviourTagRegex(mustacheLine)
-                        .Match(new MustacheBehaviourTagLine(mustacheLine, _dataModel, _scope, _formatting).ToRazor)
-                        .NoMatch(new MustacheInlineTagLine(mustacheLine, _formatting).ToRazor)
+                    new MustacheTagMatch(mustacheLine)
+                        .ControlFlowTag(new MustacheBehaviourTagLine(mustacheLine, _dataModel, _scope, _formatting).ToRazor)
+                        .InlineTag(new MustacheInlineTagLine(mustacheLine, _formatting).ToRazor)
                         .Result(AppendRazorLine);
                 }
             }
