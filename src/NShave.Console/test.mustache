@@ -1,0 +1,13 @@
+<div class="card-results o-card card-results--active{{# hasError }} card-results--error{{/ hasError }}" data-search-results>
+  {{# searchFormNoSubmit }}
+    {{> molecules-form-search-no-submit }}
+  {{/ searchFormNoSubmit }}
+
+  {{^ hasError }}
+    <div class="card-results__loop" >
+      {{# searchResults }}
+        {{> molecules-card-details }}
+      {{/ searchResults }}
+    </div>
+  {{/ hasError }}
+</div>

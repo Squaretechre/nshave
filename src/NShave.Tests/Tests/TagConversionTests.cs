@@ -110,5 +110,13 @@ namespace NShave.Tests.Tests
             const string expectedRazor = @"@Html.Partial(""_User"", (object)Model)";
             ConversionAssertion.AssertCorrectWith(mustache, expectedRazor, DataModels.Person);
         }
-    }
+
+		[Fact]
+		public void ConvertMustacheInlineIfToRazor()
+		{
+			const string mustache = @"<select id=""{{ select.name }}"" name=""{{ select.name }}"" {{# select.class }} class=""{{ select.class }}"" {{/ select.class }}>";
+			const string expectedRazor = @"<select id=""@Model.Name"" name=""@Model.Name"" @(!string.IsNullOrEmpty(Model.Class) ? string.Format(""class={0}"", Model.Class) : string.Empty)></select>";
+			ConversionAssertion.AssertCorrectWith(mustache, expectedRazor, DataModels.Person);
+		}
+	}
 }

@@ -15,7 +15,7 @@ namespace NShave.Mustache
 
         public MustacheBehaviourTagRegex Match(Func<string> success)
         {
-            if (LineContainsControlFlowTag(_mustacheTemplateLine)) _result = success();
+            if (LineContainsControlFlowTag(_mustacheTemplateLine) && !LineIsHtmlTag(_mustacheTemplateLine)) _result = success();
             return this;
         }
 
@@ -26,9 +26,12 @@ namespace NShave.Mustache
         }
 
         private static bool LineContainsControlFlowTag(string templateLine)
-            => Regex.Match(templateLine, @"{{[\^|#|\/](.*)}}", RegexOptions.IgnoreCase).Success;
+            => Regex.Match(templateLine, @"(?<![A-Za-z0-9]){{[\^|#|\/](.*)}}(?![A-Za-z0-9])", RegexOptions.IgnoreCase).Success;
 
-        public void Result(Action<string> handleResult)
+	    private static bool LineIsHtmlTag(string templateLine)
+		    => Regex.Match(templateLine, @"[<](.*)[>]", RegexOptions.IgnoreCase).Success;
+
+		public void Result(Action<string> handleResult)
             => handleResult(_result);
     }
 }

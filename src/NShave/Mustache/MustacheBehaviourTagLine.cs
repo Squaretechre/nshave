@@ -15,15 +15,15 @@ namespace NShave.Mustache
         private const string RazorCloseBlockToken = "}";
 
         private const string RazorTruthyIf =
-            @"if ({0}.{1})
+@"if ({0}.{1})
 {2}{{";
 
         private const string RazorFalseyIf =
-            @"if (!{0}.{1})
+@"if (!{0}.{1})
 {2}{{";
 
         private const string RazorForEach =
-            @"foreach (var {0} in {1}.{2})
+@"foreach (var {0} in {1}.{2})
 {3}{{";
 
         private readonly ScopeDataModel _dataAccessScope;

@@ -1,0 +1,561 @@
+{
+    "searchFormNoSubmit": {
+    "fieldLocation": {
+      "class": "card-search__location",
+      "input": {
+        "id": "search-term",
+        "class": "field-location__input",
+        "type": "search",
+        "name": "location",
+        "value": "",
+        "placeholder": "Enter a location"
+      },
+      "latitude":{
+        "input": {
+          "id": "latitude-input",
+          "class": "field-location__latitude-input",
+          "type": "hidden",
+          "name": "latitude",
+          "value": "",
+          "placeholder": "lat"
+        }
+      },
+      "longitude": {
+        "input": {
+          "id": "longitude-input",
+          "class": "field-location__longitude-input",
+          "type": "hidden",
+          "name": "longitude",
+          "value": "",
+          "placeholder": "long"
+        }
+      },
+      "geolocate": {
+        "icon": {
+          "class": "icon field-location__geolocate__icon"
+        }
+      },
+      "hasError": false,
+      "error": "No results found",
+      "submit": {
+        "class": "icon-submit field-location__submit",
+        "value": "Search"
+      }
+    },
+    "fieldFiltersType": {
+      "label": {
+        "class": "field-filters__label",
+        "text": "Filter by store type",
+        "for": ""
+      },
+      "class": "card-search__filters card-search__filters--type",
+      "filters": [
+        {
+          "id": "filter-type-shop",
+          "class": "field-filters__checkbox",
+          "name": "filter-type-shop",
+          "text": "Oxfam Shop",
+          "icon": {
+            "shop": true,
+            "class": "filter-checkbox__icon"
+          },
+          "type": "shop",
+          "data": [
+            {
+              "attribute": "type",
+              "value": "shop"
+            }
+          ],
+          "isDisabled": false
+        },
+        {
+          "id": "filter-type-donate",
+          "class": "field-filters__checkbox",
+          "name": "filter-type-donate",
+          "text": "Donation Point",
+          "icon": {
+            "donate": true,
+            "class": "filter-checkbox__icon"
+          },
+          "type": "donate",
+          "data": [
+            {
+              "attribute": "type",
+              "value": "donate"
+            }
+          ],
+          "isDisabled": false
+        }
+      ]
+    },
+    "fieldFiltersCategory": {
+      "label": {
+        "class": "field-filters__label",
+        "text": "Filter by item",
+        "for": ""
+      },
+      "class": "card-search__filters card-search__filters--category",
+      "filters": [
+        {
+          "id": "filter-category-books",
+          "class": "",
+          "name": "filter-category-books",
+          "text": "Books",
+          "type": "shop",
+          "data": [
+            {
+              "attribute": "shop",
+              "value": "1"
+            },
+            {
+              "attribute": "donate",
+              "value": "1"
+            },
+            {
+              "attribute": "all",
+              "value": "1"
+            }
+          ],
+          "isDisabled": false
+        },
+        {
+          "id": "filter-category-bridal",
+          "class": "",
+          "name": "filter-category-bridal",
+          "text": "Bridal",
+          "type": "shop",
+          "data": [
+            {
+              "attribute": "shop",
+              "value": "1"
+            },
+            {
+              "attribute": "donate",
+              "value": "1"
+            },
+            {
+              "attribute": "all",
+              "value": "1"
+            }
+          ],
+          "isDisabled": false
+        },
+        {
+          "id": "filter-category-cards",
+          "class": "",
+          "name": "filter-category-cards",
+          "text": "Cards",
+          "type": "shop",
+          "data": [
+            {
+              "attribute": "shop",
+              "value": "1"
+            },
+            {
+              "attribute": "donate",
+              "value": "0"
+            },
+            {
+              "attribute": "all",
+              "value": "1"
+            }
+          ],
+          "isDisabled": false
+        },
+        {
+          "id": "filter-category-clothing",
+          "class": "",
+          "name": "filter-category-clothing",
+          "text": "Clothing",
+          "type": "shop",
+          "data": [
+            {
+              "attribute": "shop",
+              "value": "1"
+            },
+            {
+              "attribute": "donate",
+              "value": "1"
+            },
+            {
+              "attribute": "all",
+              "value": "1"
+            }
+          ],
+          "isDisabled": false
+        },
+        {
+          "id": "filter-category-furniture",
+          "class": "",
+          "name": "filter-category-furniture",
+          "text": "Furniture",
+          "type": "shop",
+          "data": [
+            {
+              "attribute": "shop",
+              "value": "1"
+            },
+            {
+              "attribute": "donate",
+              "value": "0"
+            },
+            {
+              "attribute": "all",
+              "value": "1"
+            }
+          ],
+          "isDisabled": false
+        },
+        {
+          "id": "filter-category-stationary",
+          "class": "",
+          "name": "filter-category-stationary",
+          "text": "Stationary",
+          "type": "shop",
+          "data": [
+            {
+              "attribute": "shop",
+              "value": "1"
+            },
+            {
+              "attribute": "donate",
+              "value": "1"
+            },
+            {
+              "attribute": "all",
+              "value": "1"
+            }
+          ],
+          "isDisabled": false
+        },
+        {
+          "id": "filter-category-music",
+          "class": "",
+          "name": "filter-category-music",
+          "text": "Music",
+          "type": "shop",
+          "data": [
+            {
+              "attribute": "shop",
+              "value": "1"
+            },
+            {
+              "attribute": "donate",
+              "value": "1"
+            },
+            {
+              "attribute": "all",
+              "value": "1"
+            }
+          ],
+          "isDisabled": false
+        },
+        {
+          "id": "filter-category-food",
+          "class": "",
+          "name": "filter-category-food",
+          "text": "Food",
+          "type": "shop",
+          "data": [
+            {
+              "attribute": "shop",
+              "value": "1"
+            },
+            {
+              "attribute": "donate",
+              "value": "0"
+            },
+            {
+              "attribute": "all",
+              "value": "1"
+            }
+          ],
+          "isDisabled": false
+        },
+        {
+          "id": "filter-category-stamps",
+          "class": "",
+          "name": "filter-category-stamps",
+          "text": "Stamps & Coins",
+          "type": "shop",
+          "data": [
+            {
+              "attribute": "shop",
+              "value": "1"
+            },
+            {
+              "attribute": "donate",
+              "value": "1"
+            },
+            {
+              "attribute": "all",
+              "value": "1"
+            }
+          ],
+          "isDisabled": false
+        }
+      ]
+    },
+    "advancedFilters": {
+      "label" : "Advanced search filters",
+      "icon": {
+        "class": "card-search__advanced-toggle__icon"
+      }
+    },
+    "submit": false
+  },
+    "searchResults": [
+    {
+      "title": "Oxfam Emporium Manchester",
+      "listDetails": {
+        "address": {
+          "text": "8-10 Oldham Street, Manchester, M11JQ"
+        },
+        "showOpeningHours": true,
+        "openingHours": {
+          "current": "9am – 5:30pm",
+          "days": [
+            { "day": "Tuesday:",  "time": "9am – 5:30pm" },
+            { "day": "Wednesday:", "time": "9am – 5:30pm" },
+            { "day": "Thursday:", "time": "9am – 5:30pm" },
+            { "day": "Friday:", "time": "9am – 5:30pm" },
+            { "day": "Saturday:", "time": "9am – 5:30pm" },
+            { "day": "Sunday:", "time": "Closed" }
+          ]
+        },
+        "openingHoursLegacy": {
+          "text": "<p>Mon-Sat: 10-6pm<br>Sun: 12-5pm</p>"
+        },
+        "phone": {
+          "text":"0161 228 3797"
+        },
+        "specialties": {
+          "text": "Clothing, Vintage"
+        }
+      },
+      "cta": [
+        {
+          "button": {
+            "class": "btn--half",
+            "text": "More details"
+          }
+        },
+        {
+          "button": {
+            "class": "btn--half btn--secondary",
+            "text": "Get directions"
+          }
+        }
+      ]
+    },
+    {
+      "donationPoint": true,
+      "title": "Clothing Bank",
+      "listDetails": {
+        "address": {
+          "text": "Sainsbury's 347 Wilmslow Road, Fallowfield, Manchester, M14 6SS"
+        },
+        "showOpeningHours": false,
+        "accepts": {
+          "text": "Clothing, Vintage"
+        }
+      },
+      "cta": [
+        {
+          "button": {
+            "class": "btn--half btn--secondary",
+            "text": "Get directions"
+          }
+        }
+      ]
+    },
+    {
+      "title": "Oxfam Emporium Manchester",
+      "listDetails": {
+        "address": {
+          "text": "8-10 Oldham Street, Manchester, M11JQ"
+        },
+        "showOpeningHours": true,
+        "openingHours": {
+          "current": "9am – 5:30pm",
+          "days": [
+            { "day": "Tuesday:",  "time": "9am – 5:30pm" },
+            { "day": "Wednesday:", "time": "9am – 5:30pm" },
+            { "day": "Thursday:", "time": "9am – 5:30pm" },
+            { "day": "Friday:", "time": "9am – 5:30pm" },
+            { "day": "Saturday:", "time": "9am – 5:30pm" },
+            { "day": "Sunday:", "time": "Closed" }
+          ]
+        },
+        "phone": {
+          "text":"0161 228 3797"
+        },
+        "specialties": {
+          "text": "Clothing, Vintage"
+        }
+      },
+      "cta": [
+        {
+          "button": {
+            "class": "btn--half",
+            "text": "More details"
+          }
+        },
+        {
+          "button": {
+            "class": "btn--half btn--secondary",
+            "text": "Get directions"
+          }
+        }
+      ]
+    },
+    {
+      "title": "Oxfam Emporium Manchester",
+      "listDetails": {
+        "address": {
+          "text": "8-10 Oldham Street, Manchester, M11JQ"
+        },
+        "showOpeningHours": true,
+        "openingHours": {
+          "current": "9am – 5:30pm",
+          "days": [
+            { "day": "Tuesday:",  "time": "9am – 5:30pm" },
+            { "day": "Wednesday:", "time": "9am – 5:30pm" },
+            { "day": "Thursday:", "time": "9am – 5:30pm" },
+            { "day": "Friday:", "time": "9am – 5:30pm" },
+            { "day": "Saturday:", "time": "9am – 5:30pm" },
+            { "day": "Sunday:", "time": "Closed" }
+          ]
+        },
+        "phone": {
+          "text":"0161 228 3797"
+        },
+        "specialties": {
+          "text": "Clothing, Vintage"
+        }
+      },
+      "cta": [
+        {
+          "button": {
+            "class": "btn--half",
+            "text": "More details"
+          }
+        },
+        {
+          "button": {
+            "class": "btn--half btn--secondary",
+            "text": "Get directions"
+          }
+        }
+      ]
+    }
+  ],
+  "viewToggle": {
+    "button": {
+      "text": "Map view"
+    }
+  },
+  "header": {
+    "logo": {
+      "class": "page-header__logo"
+    },
+    "headerLinks": [
+      {
+        "iconLink": {
+          "text": "Oxfam GB",
+          "href": "#",
+          "icon": "ogb"
+        }
+      },
+      {
+        "iconLink": {
+          "text": "Help",
+          "href": "#",
+          "icon": "help"
+        }
+      }
+    ],
+    "headerButtons": [
+      {
+        "iconButton": {
+          "class": "icon-button",
+          "text": "Account",
+          "href": "#",
+          "icon": "account"
+        }
+      },
+      {
+        "iconButton": {
+          "class": "icon-button icon-button--primary",
+          "text": "Cart",
+          "href": "#",
+          "icon": "cart"
+        }
+      }
+    ],
+    "headerSearch": {
+      "class": "search-form page-header__search",
+      "select": {
+        "class": "search-form__select",
+        "name": "options",
+        "placeholder": "All",
+        "options": [
+          {
+            "value": 1,
+            "text": "Option One"
+          },
+          {
+            "value": 2,
+            "text": "Option Two"
+          }
+        ]
+      },
+      "input": {
+        "class": "search-form__input",
+        "type": "search",
+        "name": "input",
+        "value": "",
+        "placeholder": "Enter a location"
+      },
+      "submit": {
+        "class": "icon-submit search-form__submit",
+        "value": "Search"
+      }
+    },
+    "menuButton": {
+      "class": "menu-button page-header__menu-button",
+      "text": "Menu"
+    }
+  },
+
+  "button": {
+    "link": "#",
+    "text": "Example button"
+  },
+
+  "trustMessages": [
+    {
+      "trustMessage": {
+        "icon": "trust-message__icon--returns",
+        "title": "Free returns on all UK orders",
+        "subTitle": "Buy with confidence. No hassle returns"
+      }
+    },
+
+    {
+      "trustMessage": {
+        "icon": "trust-message__icon--unique-item",
+        "title": "We stock 1000<small>s</small> of unique items",
+        "subTitle": "Our volunteers are listening 100<small>s</small> more daily"
+      }
+    },
+
+    {
+      "trustMessage": {
+        "icon": "trust-message__icon--delivery",
+        "title": "Standard UK delivery £3.95",
+        "subTitle": "No matter how many items you order"
+      }
+    }
+  ]
+}

@@ -12,8 +12,11 @@
         {
             try
             {
-                var mustachePath = args[0];
-                var dataPath = args[1];
+                //var mustachePath = args[0];
+                //var dataPath = args[1];
+
+                const string mustachePath = "test.mustache";
+                const string dataPath = "data.json";
 
                 var adapter = new Adapter
                 {
@@ -34,6 +37,7 @@
                 Console.WriteLine("Error, please review the parameters.");
                 Console.WriteLine($"Failed with error: {ex.Message}");
             }
+            Console.ReadKey();
         }
 
         private static string ToRazorFileName(string mustachePath)
