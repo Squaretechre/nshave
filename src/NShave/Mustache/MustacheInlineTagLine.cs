@@ -23,7 +23,8 @@ namespace NShave.Mustache
             var firstNonWhiteSpaceChar = Regex.Match(_templateLine, @"[^\s\\]").Groups[0].Value;
             var indexOfFirstNonWhiteSpaceChar = _templateLine.IndexOf(firstNonWhiteSpaceChar, StringComparison.Ordinal);
             var leadingWhiteSpace = _templateLine.Substring(0, indexOfFirstNonWhiteSpaceChar);
-            var razorLine = ReplaceMustacheCommentsIn(_templateLine);
+	        var razorLine = ReplaceInlineIfStatements(_templateLine);
+			razorLine = ReplaceMustacheCommentsIn(razorLine);
             razorLine = ReplaceMustacheWildcardVariablesIn(razorLine);
             razorLine = ReplaceMustachePartialsIn(razorLine);
             razorLine = ReplaceMustacheVariablesIn(razorLine);
@@ -39,7 +40,23 @@ namespace NShave.Mustache
             if (exitListMatch.Success) _formatting.Leave("ul");
         }
 
-        private static string ReplaceMustacheCommentsIn(string line)
+	    private string ReplaceInlineIfStatements(string line)
+	    {
+		    var itemRegex = new Regex(@"{{[\^|#|\/](.*)}}");
+		    var matches = itemRegex.Matches(line);
+		    foreach (Match ItemMatch in matches)
+		    {
+			    var ifStatementLine = ItemMatch.Groups[0].Value;
+			    var conditionRegex = new Regex(@"(?!{{#)(.*?) (?<!}})");
+			    var bodyRegex = new Regex(@"(?<=\}}).+?(?={{\/)");
+			    var condition = conditionRegex.Matches(ifStatementLine)[1].Value.Trim();
+			    var body = bodyRegex.Match(ifStatementLine).Value.Trim();
+			    body = ReplaceMustacheVariablesIn(body);
+		    }
+		    return line;
+	    }
+
+		private static string ReplaceMustacheCommentsIn(string line)
             => Regex.Replace(line, @"{{!(.*?)}}", match =>
             {
                 var comment = match.Groups[1].Value;
