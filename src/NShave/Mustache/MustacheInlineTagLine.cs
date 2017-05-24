@@ -1,5 +1,6 @@
 using System;
 using System.Globalization;
+using System.Text;
 using System.Text.RegularExpressions;
 using NShave.Extensions;
 using NShave.Scope;
@@ -51,10 +52,30 @@ namespace NShave.Mustache
 			    var bodyRegex = new Regex(@"(?<=\}}).+?(?={{\/)");
 			    var condition = conditionRegex.Matches(ifStatementLine)[1].Value.Trim();
 			    var body = bodyRegex.Match(ifStatementLine).Value.Trim();
-			    body = ReplaceMustacheVariablesIn(body);
+			    body = RemoveScopeMarker(ReplaceMustacheVariablesIn(body));
+			    var stringifyedBody = StringFormatifyBody(body);
 		    }
 		    return line;
 	    }
+
+	    private static string StringFormatifyBody(string body)
+	    {
+		    var parts = body.Split('=');
+		    var leftHandOfAssignment = parts[0];
+		    var rightHandOfAssignment = parts[1].Replace("\"", "");
+			var stringBuilder = new StringBuilder();
+		    stringBuilder.Append(@"string.Format(""");
+		    stringBuilder.Append(leftHandOfAssignment);
+			stringBuilder.Append("={0}\", ");
+		    stringBuilder.Append(rightHandOfAssignment);
+		    stringBuilder.Append(")");
+		    var stringFormatifyBody = stringBuilder.ToString();
+		    return stringFormatifyBody;
+
+	    }
+
+	    private static string RemoveScopeMarker(string razorLine)
+		    => razorLine.Replace("@", "");
 
 		private static string ReplaceMustacheCommentsIn(string line)
             => Regex.Replace(line, @"{{!(.*?)}}", match =>
@@ -67,7 +88,7 @@ namespace NShave.Mustache
             => Regex.Replace(line, @"{{(.*?)}}", match =>
             {
                 var variableName = VariableNameFromRegexMatch(match);
-                return $"@{_formatting.ScopeNameCorrectedForRendering()}.{variableName}";
+                return $"@{_formatting.ScopeNameCorrectedForRendering()}.{variableName}".Replace(" ", "");
             });
 
         private static string ReplaceMustachePartialsIn(string line)
