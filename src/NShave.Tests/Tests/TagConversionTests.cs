@@ -115,7 +115,7 @@ namespace NShave.Tests.Tests
 		public void ConvertMustacheInlineIfToRazor()
 		{
 			const string mustache = @"<select id=""{{ select.name }}"" name=""{{ select.name }}"" {{# select.class }} class=""{{ select.class }}"" {{/ select.class }}>";
-			const string expectedRazor = @"<select id=""@Model.Select.Name"" name=""@Model.Select.Name"" @(!string.IsNullOrEmpty(Model.Select.Class) ? string.Format(""class={0}"", Model.Select.Class) : string.Empty)></select>";
+			const string expectedRazor = @"<select id=""@Model.Select.Name"" name=""@Model.Select.Name"" @(!string.IsNullOrEmpty(Model.Select.Class) ? string.Format(""class={0}"", Model.Select.Class) : string.Empty)>";
 			ConversionAssertion.AssertCorrectWith(mustache, expectedRazor, DataModels.Person);
 		}
 	}

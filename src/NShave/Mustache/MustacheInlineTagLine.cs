@@ -45,16 +45,23 @@ namespace NShave.Mustache
 	    {
 		    var itemRegex = new Regex(@"{{[\^|#|\/](.*)}}");
 		    var matches = itemRegex.Matches(line);
-		    foreach (Match ItemMatch in matches)
+		    foreach (Match match in matches)
 		    {
-			    var ifStatementLine = ItemMatch.Groups[0].Value;
-			    var conditionRegex = new Regex(@"(?!{{#)(.*?) (?<!}})");
+			    var ifStatementLine = match.Groups[0].Value;
+			    var predicateRegex = new Regex(@"(?!{{#)(.*?) (?<!}})");
 			    var bodyRegex = new Regex(@"(?<=\}}).+?(?={{\/)");
-			    var condition = conditionRegex.Matches(ifStatementLine)[1].Value.Trim();
+
+			    var predicate = predicateRegex.Matches(ifStatementLine)[1].Value.Trim();
 			    var body = bodyRegex.Match(ifStatementLine).Value.Trim();
-			    body = RemoveScopeMarker(ReplaceMustacheVariablesIn(body));
+
+			    predicate = RemoveScopeMarker(RazorifyVariable(predicate));
+				body = RemoveScopeMarker(ReplaceMustacheVariablesIn(body));
+
 			    var stringifyedBody = StringFormatifyBody(body);
-		    }
+			    var razorInlineIfStatement = CreateInlineRazorIfStatement(predicate, stringifyedBody);
+
+				line = Regex.Replace(line, @"{{[\^|#|\/](.*)}}", m => razorInlineIfStatement);
+			}
 		    return line;
 	    }
 
@@ -71,11 +78,16 @@ namespace NShave.Mustache
 		    stringBuilder.Append(")");
 		    var stringFormatifyBody = stringBuilder.ToString();
 		    return stringFormatifyBody;
-
 	    }
 
 	    private static string RemoveScopeMarker(string razorLine)
 		    => razorLine.Replace("@", "");
+
+	    private static string RazorifyVariable(string predicate)
+		    => $"@Model.{CultureInfo.CurrentCulture.TextInfo.ToTitleCase(predicate.Trim())}";
+
+		private static string CreateInlineRazorIfStatement(string predicate, string stringifyedBody)
+		    => $"@(!string.IsNullOrEmpty({predicate}) ? {stringifyedBody} : string.Empty)";
 
 		private static string ReplaceMustacheCommentsIn(string line)
             => Regex.Replace(line, @"{{!(.*?)}}", match =>
